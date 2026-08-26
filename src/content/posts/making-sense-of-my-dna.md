@@ -4,7 +4,7 @@ pubDatetime: 2026-08-25T09:00:00Z
 title: Making sense of my own DNA with OSGenome
 featured: true
 draft: false
-ogImage: assets/ancestry-regions-matches.png
+ogImage: _osgenome-assets/ancestry-regions-matches.png
 tags:
   - genomics
   - python
@@ -23,13 +23,13 @@ That feeling is where this project began.
 
 I'd spit in the tube, mailed it off, and waited the requisite few weeks. When the results email finally landed, I clicked through expecting to learn something about myself. What I got was a pie chart of regions and a list of relatives I'd never met and, if I'm honest, will never message.
 
-![Ancestry summary cards: a donut chart labelled 7 regions, an Ancestral Journeys map with 1 journey, and a DNA matches panel showing 89 new and 148,413 total matches](assets/ancestry-regions-matches.png)
+![Ancestry summary cards: a donut chart labelled 7 regions, an Ancestral Journeys map with 1 journey, and a DNA matches panel showing 89 new and 148,413 total matches](_osgenome-assets/ancestry-regions-matches.png)
 
 It's a nice product. But after ten minutes of clicking around, I'd seen everything there was to see. The report is polished, curated, and closed: no "why," no way into the actual data, no room to ask my own questions. It felt like being handed a book and allowed to read only the back-cover blurb.
 
 That test wasn't just a pie chart, though. Under the hood, Ancestry had genotyped **over 700,000 SNPs** from my sample. A SNP (single-nucleotide polymorphism, pronounced "snip") is a single spot in your genome where one base is swapped for another, and it's the most common form of genetic variation we have. These are the little switches that research has tried to associate with all sorts of things: how you metabolize caffeine, whether cilantro tastes like soap to you, how likely you are to go bald.
 
-![Ancestry trait cards for gray hair, birth weight, birthmarks, and cleft chin, each shown as a gauge with a one-line verdict like "unlikely to go gray early"](assets/ancestry-traits.png)
+![Ancestry trait cards for gray hair, birth weight, birthmarks, and cleft chin, each shown as a gauge with a one-line verdict like "unlikely to go gray early"](_osgenome-assets/ancestry-traits.png)
 
 This is the part that stings: the platform clearly *has* the trait data. It'll happily tell me I'm unlikely to go gray early or likely to have a cleft chin, rendered as a tidy gauge. But it stops right there. Which SNP? What's the association strength? Says who? Those questions, the only ones I actually cared about, were nowhere to be found.
 
@@ -67,7 +67,7 @@ It fetches SNP information from SNPedia a few hundred at a time, so you get some
 
 Here's what that actually looks like once your data is in:
 
-![The OSGenome grid in dark mode, showing a toolbar with Export to Excel, Export to PDF, Lookup on SNPedia, and filter controls, above sortable Name, Short Description, and Genotype variations columns. Two rows are visible: rs2651899 for migraine risk and rs2003046 for male pattern baldness, each listing every possible genotype with my own bolded](assets/dna-explorer.png)
+![The OSGenome grid in dark mode, showing a toolbar with Export to Excel, Export to PDF, Lookup on SNPedia, and filter controls, above sortable Name, Short Description, and Genotype variations columns. Two rows are visible: rs2651899 for migraine risk and rs2003046 for male pattern baldness, each listing every possible genotype with my own bolded](_osgenome-assets/dna-explorer.png)
 
 Look at the baldness row (`rs2003046`). The grid doesn't just tell me my result, it lays out every genotype at that position and what each one is associated with, then bolds the one that's actually mine: `(A;A)`, tied to a 0.57x lower risk. One row up, `rs2651899` shows my `(G;G)` and its 1.2x higher risk for migraines. Mildly reassuring on the hairline, mildly annoying on the headaches.
 

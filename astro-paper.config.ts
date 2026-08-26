@@ -2,7 +2,7 @@ import { defineAstroPaperConfig } from "./src/types/config";
 
 export default defineAstroPaperConfig({
   site: {
-    url: "https://example.com/",
+    url: "https://blog.rostyslav.eu/",
     title: "My Blog",
     description: "Thoughts, notes, and things I am building.",
     author: "Rostyslav Fridman",
