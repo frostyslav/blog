@@ -31,7 +31,7 @@ That test wasn't just a pie chart, though. Under the hood, Ancestry had genotype
 
 ![Ancestry trait cards for gray hair, birth weight, birthmarks, and cleft chin, each shown as a gauge with a one-line verdict like "unlikely to go gray early"](_osgenome-assets/ancestry-traits.png)
 
-This is the part that stings: the platform clearly *has* the trait data. It'll happily tell me I'm unlikely to go gray early or likely to have a cleft chin, rendered as a tidy gauge. But it stops right there. Which SNP? What's the association strength? Says who? Those questions, the only ones I actually cared about, were nowhere to be found.
+This is the part that stings: the platform clearly _has_ the trait data. It'll happily tell me I'm unlikely to go gray early or likely to have a cleft chin, rendered as a tidy gauge. But it stops right there. Which SNP? What's the association strength? Says who? Those questions, the only ones I actually cared about, were nowhere to be found.
 
 I had 700,000 of them sitting behind a decorative graphic, and I couldn't touch a single one. As someone who has spent a career pulling systems apart to understand how they work, that nagged at me the way a locked door does when you're fairly sure you're allowed inside.
 
@@ -47,7 +47,7 @@ So I had the raw material. What I needed was a way to give it meaning, without h
 
 Before writing anything myself, I went looking, and found an open-source project built around exactly this idea. It cross-referenced raw genetic data against [SNPedia](https://www.snpedia.com/), a community-maintained wiki of what individual SNPs are associated with, and presented the results in a filterable grid you could explore at your own pace. Everything ran locally. Your DNA never left your machine. The right philosophy.
 
-There was just one problem: it didn't work with my data. It was built for a different provider's export format, and formats are where genomics gets fiddly. Different services use different delimiters (Ancestry uses tabs, others use commas) and different column layouts. More subtly, they use different genome *builds* and orientations. That last one is the sneaky part: SNPedia reports SNPs against the build it was originally created from, while modern testing vendors use a newer reference. When the orientations don't line up, you can end up reading a genotype backwards without realizing it.
+There was just one problem: it didn't work with my data. It was built for a different provider's export format, and formats are where genomics gets fiddly. Different services use different delimiters (Ancestry uses tabs, others use commas) and different column layouts. More subtly, they use different genome _builds_ and orientations. That last one is the sneaky part: SNPedia reports SNPs against the build it was originally created from, while modern testing vendors use a newer reference. When the orientations don't line up, you can end up reading a genotype backwards without realizing it.
 
 ## Making it work with Ancestry data
 
@@ -99,4 +99,4 @@ I spend my working life on cloud architecture and platforms at scale, wrapped in
 
 It's also the pattern behind most of my favorite side projects. A moment of "wait, why can't I just see this?", followed by the slow, satisfying work of building the thing that lets me. The technology is almost beside the point. What I'm chasing is turning a closed box back into something I can open.
 
-So, back to you. Have you taken one of these tests and felt that same little pang of *is that it?* If so, go find the download button and poke at your raw data. The code is open source and runs entirely on your machine. You can find [OSGenome on GitHub](https://github.com/frostyslav/OSGenome), and I'd love to hear what you turn up, or what format you'd like it to read next.
+So, back to you. Have you taken one of these tests and felt that same little pang of _is that it?_ If so, go find the download button and poke at your raw data. The code is open source and runs entirely on your machine. You can find [OSGenome on GitHub](https://github.com/frostyslav/OSGenome), and I'd love to hear what you turn up, or what format you'd like it to read next.

@@ -1,46 +1,61 @@
 name: CI
 
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
 permissions:
   contents: read
 
-on:
-  pull_request:
-    types:
-      - opened
-      - edited
-      - synchronize
-      - reopened
-  workflow_call:
-
 jobs:
-  build:
+  build-and-test:
     name: Code standards & build
     runs-on: ubuntu-latest
-    timeout-minutes: 3
-
     steps:
-      - name: "☁️ Checkout repository"
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
-      - name: "📦 Install pnpm"
-        uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v6
         with:
-          version: "11.3.0"
+          node-version-file: ".nvmrc"
+          cache: "npm"
 
-      - name: Use Node.js
-        uses: actions/setup-node@v4
+      - run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Check formatting
+        run: npm run format:check
+
+      - name: Build
+        run: npm run build
+
+  deploy:
+    needs: build-and-test
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
         with:
-          node-version: "24"
-          cache: "pnpm"
+          node-version-file: ".nvmrc"
+          cache: "npm"
 
-      - name: "📦 Install dependencies"
-        run: pnpm install --frozen-lockfile
+      - run: npm ci
 
-      - name: "🔎 Lint code"
-        run: pnpm run lint
+      - name: Build
+        run: npm run build
 
-      - name: "📝 Checking code format"
-        run: pnpm run format:check
-
-      - name: "🚀 Build the project"
-        run: pnpm run build
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist --project-name=${{ vars.CLOUDFLARE_PROJECT_NAME }}
