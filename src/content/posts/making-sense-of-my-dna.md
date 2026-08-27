@@ -13,19 +13,17 @@ tags:
 description: How an underwhelming Ancestry test sent me down a rabbit hole of raw DNA files, SNPedia, and an open-source project I ended up rebuilding to work with my own data.
 ---
 
-Have you ever felt that something more was lurking behind the polished pie charts of your DNA results? That the tidy donut of percentages was hiding something more interesting, and that someone had quietly decided you didn't need to see it?
-
-That feeling is where this project began.
+I got my Ancestry DNA results back and spent about ten minutes clicking around before running out of things to look at. A pie chart of regions, a list of distant relatives, and a handful of trait gauges. Polished, curated, and closed. Somewhere behind that tidy donut of percentages was the actual data, and someone had quietly decided I didn't need to see it.
 
 ## Table of contents
 
 ## The test that left me wanting more
 
-I'd spit in the tube, mailed it off, and waited the requisite few weeks. When the results email finally landed, I clicked through expecting to learn something about myself. What I got was a pie chart of regions and a list of relatives I'd never met and, if I'm honest, will never message.
+I spit in the tube, mailed it off, and waited the requisite few weeks. When the results email finally landed, I clicked through expecting to learn something about myself.
 
 ![Ancestry summary cards: a donut chart labelled 7 regions, an Ancestral Journeys map with 1 journey, and a DNA matches panel showing 89 new and 148,413 total matches](_osgenome-assets/ancestry-regions-matches.png)
 
-It's a nice product. But after ten minutes of clicking around, I'd seen everything there was to see. The report is polished, curated, and closed: no "why," no way into the actual data, no room to ask my own questions. It felt like being handed a book and allowed to read only the back-cover blurb.
+It's a nice product. But the report is polished, curated, and closed: no "why," no way into the actual data, no room to ask my own questions. Like being handed a book and only allowed to read the blurb.
 
 That test wasn't just a pie chart, though. Under the hood, Ancestry had genotyped **over 700,000 SNPs** from my sample. A SNP (single-nucleotide polymorphism, pronounced "snip") is a single spot in your genome where one base is swapped for another, and it's the most common form of genetic variation we have. These are the little switches that research has tried to associate with all sorts of things: how you metabolize caffeine, whether cilantro tastes like soap to you, how likely you are to go bald.
 
@@ -33,11 +31,11 @@ That test wasn't just a pie chart, though. Under the hood, Ancestry had genotype
 
 This is the part that stings: the platform clearly _has_ the trait data. It'll happily tell me I'm unlikely to go gray early or likely to have a cleft chin, rendered as a tidy gauge. But it stops right there. Which SNP? What's the association strength? Says who? Those questions, the only ones I actually cared about, were nowhere to be found.
 
-I had 700,000 of them sitting behind a decorative graphic, and I couldn't touch a single one. As someone who has spent a career pulling systems apart to understand how they work, that nagged at me the way a locked door does when you're fairly sure you're allowed inside.
+I had 700,000 of them sitting behind a decorative graphic, and I couldn't touch a single one. That nagged at me the way a locked door does when you're fairly sure you're allowed inside.
 
 ## Getting my hands on the raw data
 
-Here's the part a lot of people don't realize: most of these testing services let you **download your raw DNA data**. I didn't know that at first. It's usually buried a few menus deep, behind a settings page nobody visits, but it's there.
+Most people don't realize this: most of these testing services let you **download your raw DNA data**. I didn't know that at first. It's usually buried a few menus deep, behind a settings page nobody visits, but it's there.
 
 A few clicks after I found the button, I had my own file on my laptop: a plain text export with hundreds of thousands of rows, each one an SNP id, a chromosome position, and my specific genotype. No pie chart, no curation. I opened it in a text editor just to scroll through it.
 
@@ -85,18 +83,16 @@ Since I started down this path, the original maintainer has released a new versi
 
 Think about what a grid of SNPs asks of you. Even with SNPedia a click away, you're still the one reading study abstracts and weighing "slightly faster caffeine metabolism" against a wall of caveats. It's rewarding, but it's work. What if you could just ask a patient interpreter sitting next to you, "what does this row actually mean for me?"
 
-That's the headline feature of OSGenome2: you can point **local AI models** at your data, via [Ollama](https://ollama.com/), and have them explain it in plain language.
+The big addition in OSGenome2: you can point **local AI models** at your data, via [Ollama](https://ollama.com/), and have them explain it in plain language.
 
 If you haven't used it, Ollama runs open large language models entirely on your own hardware, models like Llama, Mistral, and Gemma. You pull a model once (`ollama pull llama3.1`, say), and from then on it runs locally, exposing an HTTP API on `localhost` that an application can call much like it would call a cloud provider. The difference is that nothing leaves your machine, and there's no API key or per-token bill.
 
-That's what makes the pairing click for genetic data specifically. OSGenome already kept your genotypes local; it only ever fetched public SNP descriptions. The obvious way to add AI explanations would have broken that: pasting your variants into a cloud chatbot is exactly the "upload the most personal file you own to a stranger's server" move I'd spent the whole project avoiding. Running the model through Ollama closes that gap. The explanations and the data live on the same laptop, and the whole conversation stays inside your own four walls.
+That's what makes this work for genetic data specifically. OSGenome already kept your genotypes local; it only ever fetched public SNP descriptions. The obvious way to add AI explanations would have broken that: pasting your variants into a cloud chatbot is exactly the "upload the most personal file you own to a stranger's server" move I'd spent the whole project avoiding. Running the model through Ollama keeps everything local. The explanations and the data live on the same laptop, and the whole conversation stays inside your own four walls.
 
 The catch, familiar by now, is that OSGenome2 is built for 23andMe data rather than Ancestry. You can probably guess what I did next. I've started adapting it the same way I did the first time, teaching it to speak Ancestry's dialect. I'm hoping the PRs get accepted upstream so everyone benefits. If they don't, I'll carry on the work in my own fork, and this time there's a local model waiting to help read the results out loud.
 
 ## Why I keep coming back to projects like this
 
-I spend my working life on cloud architecture and platforms at scale, wrapped in SLAs, stakeholders, and more moving parts than any one person can hold in their head. There's something grounding about a project this small and this personal: my own genome, my own laptop, my own questions, no on-call rotation attached.
+My day job is cloud architecture and platforms at scale: SLAs, stakeholders, more moving parts than any one person can hold in their head. A project this small and this personal is a good counterweight. Just me, a genome file, and whatever I feel like asking it. No on-call rotation attached.
 
-It's also the pattern behind most of my favorite side projects. A moment of "wait, why can't I just see this?", followed by the slow, satisfying work of building the thing that lets me. The technology is almost beside the point. What I'm chasing is turning a closed box back into something I can open.
-
-So, back to you. Have you taken one of these tests and felt that same little pang of _is that it?_ If so, go find the download button and poke at your raw data. The code is open source and runs entirely on your machine. You can find [OSGenome on GitHub](https://github.com/frostyslav/OSGenome), and I'd love to hear what you turn up, or what format you'd like it to read next.
+If you've taken one of these tests and felt that same pang of _is that it?_, go find the download button and poke at your raw data. The code is open source and runs entirely on your machine. You can find [OSGenome on GitHub](https://github.com/frostyslav/OSGenome), and I'd love to hear what you turn up, or what format you'd like it to read next.
