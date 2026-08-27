@@ -37,7 +37,6 @@ Two projects do the heavy lifting:
 
 **[OHIF Viewer](https://ohif.org/)** is an open-source medical image viewer. It connects to Orthanc (or any DICOM-compliant server) and gives you a proper radiology workstation in your browser. You can scroll through slices, adjust window/level (brightness and contrast for different tissue types), measure distances and angles, compare sequences side by side, and view different anatomical planes.
 
-
 ![OHIF displaying a whole-body scan in three simultaneous planes with segmentation overlays highlighting marked nodes and lesions](_ohif-assets/qipcm-01.webp)
 
 <center><em>Sample data from the <a href="https://ohif.org/showcase">OHIF showcase</a>.</em></center>
@@ -119,7 +118,6 @@ The difference is substantial. The printed sheet is a lossy snapshot: a handful 
 - View sagittal, coronal, and axial planes from a single acquisition
 - Measure structures yourself (with the caveat that you're not trained to interpret what you're measuring)
 - Build 3D volume renderings from CT data
-
 
 ![A CT abdominal slice in OHIF with measurement annotations: elliptical region selections showing area and mean Hounsfield units, bidirectional measurements, angular measurements, and length measurements overlaid on the scan](_ohif-assets/xnat.webp)
 
