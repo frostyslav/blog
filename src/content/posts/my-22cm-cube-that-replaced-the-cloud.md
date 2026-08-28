@@ -148,14 +148,14 @@ My strategy for limiting blast radius: every container's persistent data lives i
 
 Rough math on what this replaces:
 
-| Service                | Monthly cost                                              |
-| ---------------------- | --------------------------------------------------------- |
-| Google One 2TB         | €9.99                                                     |
-| Netflix Standard       | €13.99                                                    |
-| Evernote               | €6.65                                                     |
-| LastPass               | €2.90                                                     |
-| Adobe Acrobat Standard | €17.99                                                    |
-| **Total**              | **~€51.52/month, €618/year**                              |
+| Service                | Monthly cost                 |
+| ---------------------- | ---------------------------- |
+| Google One 2TB         | €9.99                        |
+| Netflix Standard       | €13.99                       |
+| Evernote               | €6.65                        |
+| LastPass               | €2.90                        |
+| Adobe Acrobat Standard | €17.99                       |
+| **Total**              | **~€51.52/month, €618/year** |
 
 Hardware costs (one-time):
 
@@ -176,6 +176,7 @@ Prometheus + Grafana + node-exporter are running, but I'll be honest: I don't ha
 - **Power outages at my mother's home in Ukraine.** She has a couple of EcoFlow batteries, and given the current situation there, knowing when power goes out and comes back matters. I have a custom Go exporter for that.
 
 ![](_nas-assets/ecoflow-grafana.png)
+
 - **UPS status** for the server itself (the APC wattage graph above comes from this)
 - **Wireguard usage** for VPN connections
 - **General server health**: CPU, memory, disk, container restarts
