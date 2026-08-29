@@ -44,14 +44,30 @@ So I did the thing I always do when a manual process becomes painful: I turned i
 
 The result is [personal-cv-static-site](https://github.com/frostyslav/personal-cv-static-site). The core idea: my CV content is **data**, not a document. It lives in YAML files. The presentation is separate, handled by templates. And everything gets generated from that single source of truth.
 
-The content sits in plain YAML:
+The content sits in plain YAML, split by section: `experience.yaml`, `skills.yaml`, `projects.yaml`, `education.yaml`, `certifications.yaml`. A work entry is just fields:
 
-- `experience.yaml` for work history
-- `skills.yaml` for skill categories
-- `projects.yaml` for open-source work and speaking
-- `education.yaml`, `certifications.yaml`, and so on
+```yaml
+- date: 'Jan 2023 - Present'
+  title: Tech Lead
+  project: 'Payment Platform'
+  technologies:
+    - TypeScript
+    - Node.js
+    - PostgreSQL
+    - Kubernetes
+    - AWS
+  overview: >-
+    Leading the payment platform team responsible for processing
+    millions of transactions daily.
+  results:
+    - Reduced payment processing latency by 40% through architecture redesign
+    - Led migration from monolith to microservices
+    - Mentored 3 junior engineers to mid-level promotions
+```
 
 Any developer or devops person can maintain this in about two minutes. No fighting a word processor, no formatting drift. Change a line of YAML, commit, done.
+
+![The CV site built from the sample Jane Doe data](_cv-assets/cv-site.png)
 
 The build pipeline is deliberately boring: a framework-free Node.js build compiles the YAML into HTML via Handlebars templates, bundles and minifies the CSS and JS, and fingerprints everything for caching. It's fast and there's nothing to rot.
 
