@@ -47,9 +47,9 @@ The result is [personal-cv-static-site](https://github.com/frostyslav/personal-c
 The content sits in plain YAML, split by section: `experience.yaml`, `skills.yaml`, `projects.yaml`, `education.yaml`, `certifications.yaml`. A work entry is just fields:
 
 ```yaml
-- date: 'Jan 2023 - Present'
+- date: "Jan 2023 - Present"
   title: Tech Lead
-  project: 'Payment Platform'
+  project: "Payment Platform"
   technologies:
     - TypeScript
     - Node.js
