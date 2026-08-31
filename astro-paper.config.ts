@@ -30,6 +30,7 @@ export default defineAstroPaperConfig({
   socials: [
     { name: "github",   url: "https://github.com/frostyslav" },
     { name: "linkedin", url: "https://linkedin.com/in/rostyslavfridman/" },
+    { name: "website",  url: "https://cv.rostyslav.eu/", linkTitle: "Rostyslav Fridman's personal website" },
   ],
   shareLinks: [
     { name: "whatsapp", url: "https://wa.me/?text=" },
