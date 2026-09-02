@@ -3,7 +3,7 @@ author: Rostyslav Fridman
 pubDatetime: 2026-09-02T09:00:00Z
 title: I can run AI models on my gaming PC now
 featured: false
-draft: true
+draft: false
 tags:
   - local-ai
   - ollama
@@ -17,6 +17,8 @@ I'm a gamer, which is the part of this story that makes the hardware easy to exp
 
 That's still what I use it for. But the same card now runs local language models, which is a lot of extra mileage from a component I bought to make explosions look better.
 
+One thing up front: I still use hosted models every day. For the hardest problems and the frontier of what any model can do, a big cloud model is usually the right tool, and I reach for one without hesitation. This post isn't an argument that local replaces cloud. Local models earn a specific slot in the toolbox, the one where privacy, availability, or cost matters more than raw capability. The question was never which is better, but which one for this task, and running my own means I finally get to choose.
+
 ## Table of contents
 
 ## Ollama is the easy part
@@ -26,13 +28,13 @@ The tool that made this practical for me is [Ollama](https://ollama.com/). It pa
 The basic workflow is short:
 
 ```bash
-ollama pull qwen3:14b
-ollama run qwen3:14b
+ollama pull qwen2.5-coder:14b
+ollama run qwen2.5-coder:14b
 ```
 
 The model downloads once. After that, inference happens on my machine. No API key, no per-token bill, and no text leaves the computer unless I deliberately send it somewhere. Ollama also gives applications a familiar HTTP interface, so tools that support local models can usually point at `localhost` and carry on.
 
-That last part matters more than the command-line chat. A local model earns its keep when it becomes part of things I already do: explaining files, helping with code, searching personal notes, or taking a first pass over data I'd rather not upload to a cloud service. It doesn't need to be the smartest model in the world for that. It needs to be available, private, and good enough for the task.
+That last part matters more than the command-line chat. A local model earns its keep when it becomes part of things I already do: explaining files, helping with code, searching personal notes, or taking a first pass over data I'd rather not upload to a cloud service. It doesn't need to be the smartest model in the world for that. It needs to be available, private, and good enough.
 
 ## The GPU was already paid for
 
@@ -44,60 +46,61 @@ ollama ps
 
 The `PROCESSOR` column tells you whether a loaded model is running on GPU, CPU, or split across both. If it says CPU when you expected GPU, that's your answer for why it feels slow.
 
-On the 7900 XTX specifically, the good news is that the card reports as `gfx1100`, which is on ROCm's officially supported list. That means it works without the `HSA_OVERRIDE_GFX_VERSION` trick that owners of unsupported cards have to reach for. What you do still need is a recent ROCm install, your user in the `render` and `video` groups so the process can reach `/dev/kfd` and `/dev/dri`, and the ROCm build of Ollama. The official install script bundles the right one. If you run Ollama in a container, you pass those device files through to it. Once that's in place, `ollama ps` shows GPU and everything just works.
+I run this on Windows, and the good news is that the setup is boring. Ollama ships as a native Windows application with AMD Radeon support built in, so there's no separate ROCm install or driver dance to do by hand. You install it, it runs in the background, and the `ollama` command shows up in PowerShell. The 7900 XTX is a supported card, so it gets picked up without any of the workarounds that owners of older or unofficial cards have to chase down.
 
-When it does work, the experience is genuinely good. Responses are local, the first token arrives quickly enough for normal use, and I can leave a model running without watching a cloud bill tick upward. I don't need new hardware for every new model either. I already own the expensive part, which changes the economics completely.
+One more thing if you want other machines on your network to reach it, as I do below: by default Ollama only listens on `localhost`. Set the `OLLAMA_HOST` environment variable to `0.0.0.0` so it binds on your LAN, and make sure the firewall lets the port through. Keep that inside your own network, not exposed to the internet.
+
+When it does work, the experience is good. Responses are local, the first token arrives quickly enough for normal use, and I can leave a model running without watching a cloud bill tick upward. I don't need new hardware for every new model either. I already own the expensive part, which changes the economics.
 
 ## How fast is it, actually
 
 "Fast enough" deserves a number. Ollama will hand you one if you run a model with `--verbose`:
 
 ```bash
-ollama run qwen3:14b --verbose "Write a haiku about garbage collection."
+ollama run qwen2.5-coder:14b --verbose "Write a haiku about garbage collection"
 ```
 
-After the response, it prints timing stats. The line that matters is `eval rate`, your generation speed in tokens per second. `prompt eval rate` is how quickly it ingested your prompt, which matters more when you feed it large context.
+After the response, it prints timing stats. Here is what `qwen2.5-coder:14b` looked like on my 7900 XTX:
 
-<!-- TODO: replace with your own measured numbers from `ollama run ... --verbose` -->
-On my 7900 XTX I see roughly TODO tok/s on an 8B model at Q4 and around TODO tok/s at 14B, both comfortably faster than I can read. For reference, a 7900 XTX running Llama 3.1 8B lands in the ballpark of 90+ tok/s, roughly three-quarters of an RTX 4090 at a fraction of the price. The moment those numbers matter most is when a model spills out of VRAM: the same prompt that ran at reading speed on the GPU drops to a crawl once the CPU is doing part of the work, which is exactly the "went to make tea" transition worth avoiding.
+```text
+total duration:       12.4396372s
+load duration:        12.1634424s
+prompt eval count:    36 token(s)
+prompt eval duration: 86.79ms
+prompt eval rate:     414.79 tokens/s
+eval count:           13 token(s)
+eval duration:        187.153ms
+eval rate:            69.46 tokens/s
+```
 
-It also changes how I think about privacy. I've written before about keeping [genetic data](/posts/making-sense-of-my-dna/) and [medical images](/posts/looking-inside-the-disc-your-radiologist-gives-you/) on my own machines. Sending a private document to a hosted chatbot can be perfectly reasonable in some situations, but it should be a choice. With a local model, the default is simpler: the document stays here.
+The line that matters is `eval rate`, the generation speed in tokens per second. Here it's **69.46 tok/s**, comfortably faster than I can read. `prompt eval rate` is how quickly it ingested my prompt, which matters more when you feed the model a large context; at 414 tok/s it chewed through the short prompt instantly. The `load duration` is the one-time cost of pulling the weights into VRAM, which is why the very first request after starting a model feels slow and every one after it doesn't.
 
-## Bigger doesn't automatically mean better
+The more interesting result was a larger model. `qwen3.6:35b-a3b` is a mixture-of-experts model: 35 billion parameters on paper, but only about 3 billion active per token. That is the trick that lets a "35B" model stay usable on consumer hardware.
 
-The first thing people ask is which model to run. The answer is less exciting than the leaderboards suggest: run the largest model that fits comfortably and stays fast enough that you'll actually use it.
+```text
+total duration:       1m9.9225693s
+load duration:        44.8768664s
+prompt eval rate:     37.11 tokens/s
+eval count:           1556 token(s)
+eval duration:        24.569784s
+eval rate:            63.33 tokens/s
+```
 
-A model's parameter count is a rough measure of its capacity. A 7-billion-parameter model is generally more limited than a 14-billion one, and a 32-billion model generally has more room for reasoning and knowledge than either. But parameter count isn't a quality score. Training data, architecture, instruction tuning, and the task itself matter too. A well-tuned 8B model can beat a mediocre 14B one on the work you actually care about.
+It still generated at **63.33 tok/s**, barely slower than the dense 14B model, because the active parameter count is what the GPU actually pushes through per token. The `total duration` of over a minute looks alarming until you read the breakdown: 45 seconds of that was the cold `load duration`, and the model also happened to emit 1,556 tokens of visible chain-of-thought before its three-line answer. The generation itself was fast.
 
-There's a hard limit hiding behind every impressive model announcement. The parameters have to live somewhere, and VRAM is finite. If a model doesn't fit on the GPU, some or all of it spills into system RAM. That can still work, but the experience shifts from "local assistant" to "I asked a question and went to make tea." Running a model isn't the same as running it pleasantly.
+These numbers matter most when a model spills out of VRAM. The same prompt that ran at reading speed on the GPU drops to a crawl once the CPU picks up part of the work. That's the transition worth avoiding.
 
-For my hardware, the small and middle ranges are the useful ones. A 7B or 8B model is light enough to feel instant. Around 14B is a good compromise when I want more capable answers without turning every prompt into an event. Larger models can be interesting, but the number on the model card isn't a reason on its own to accept poor speed or constant memory pressure.
+## Three numbers decide whether a model runs well
 
-The best model is the one that answers before I forget what I was trying to do.
+The first thing people ask is which model to run. The answer is less exciting than the leaderboards suggest: run the largest model that fits comfortably and stays fast enough that you'll actually use it. Three numbers decide that, and the one on the model card is only the first.
 
-## Quantization is how the model fits
+**Parameter count** is a rough measure of capacity. A 7B model is generally more limited than a 14B one, and a 32B model has more room for reasoning and knowledge than either. But it isn't a quality score. Training data, architecture, and instruction tuning matter too, and a well-tuned 8B model can beat a mediocre 14B one on the work you actually care about. The parameters also have to live somewhere. VRAM is finite, and a model that doesn't fit on the GPU spills into system RAM, where the experience shifts from "local assistant" to "I asked a question and went to make tea." For my 24 GB card, 7B and 8B models feel instant, 14B is a good compromise when I want more capable answers, and anything larger has to earn the speed I give up.
 
-The next piece of vocabulary is **quantization**. Model weights are stored and computed in numerical formats of varying precision. Quantization uses fewer bits per weight, shrinking the memory footprint and often making local inference possible on consumer hardware at all.
+**Quantization** is how a model that shouldn't fit does anyway. Weights are stored at a given numerical precision, and quantization uses fewer bits per weight to shrink the memory footprint. You'll see names like `Q4_K_M`, `Q5_K_M`, and `Q8_0`: lower-bit versions use less memory and run faster, higher-bit versions keep more precision, and aggressive quantization can cost quality on hard reasoning or precise language. The numbers make the case on their own. A 14B model at full 16-bit precision wants around 28 GB just for weights, which already overflows my card; the same model at `Q4_K_M` lands closer to 9 GB, leaving comfortable room for context. It's a sliding scale, not a choice between a perfect model and a broken one. A good 4-bit quant can be remarkably capable, while the 8-bit version may not be worth the extra memory.
 
-You'll see names like `Q4_K_M`, `Q5_K_M`, and `Q8_0`. The exact details depend on the model family and runtime, but the tradeoff is straightforward:
+**Context size** is how many tokens the model can consider at once: instructions, history, pasted text, retrieved documents, and the response as it's generated. More sounds better right up until the memory cost arrives, because the runtime needs a KV cache that grows with the context. A model that was fast at 8,192 tokens can crawl at 32,768 without changing at all. There's a quality trap too. A 128K window doesn't mean every task benefits from 128K of text; irrelevant context makes retrieval worse and burns memory for nothing. I'd rather retrieve the relevant part of a document than dump the whole thing in and hope the model finds the sentence I meant.
 
-- Lower-bit quantization uses less memory and is usually faster.
-- Higher-bit quantization keeps more precision and needs more memory.
-- More aggressive quantization can reduce quality, especially on hard reasoning or precise language tasks.
-
-A rough sense of the scale helps here. A 14B model at full 16-bit precision wants around 28 GB just for weights, which already overflows my 24 GB card. The same model at `Q4_K_M` lands closer to 9 GB, leaving comfortable room for context. That gap is the whole reason quantization matters on consumer hardware.
-
-It isn't a binary choice between a perfect model and a broken one. It's a sliding scale. A good 4-bit quantization can be remarkably capable, while the 8-bit version may not be worth the extra memory for the work I'm doing. The right choice depends on the model, the task, and how much speed I'll trade for a little more fidelity.
-
-This is why "it's a 14B model" is incomplete information. I also need to know how it's quantized, how much context it's configured for, and whether my machine can keep it where it belongs. Model size is only the first number in the conversation.
-
-## Context is memory, and memory isn't free
-
-The third constraint is context size: how many tokens the model can consider in one request. The context holds the instructions, conversation history, pasted text, retrieved documents, and the response being generated. More context sounds unambiguously better right up until the memory cost arrives.
-
-A large context window consumes more memory, and the cost isn't limited to the model weights. The runtime also needs a KV cache to track the conversation as it grows. Increase the context size and you increase that cache. On a card with finite VRAM, a model that was fast at 8,192 tokens can slow to a crawl at 32,768, even though the model itself hasn't changed.
-
-There's a quality trap here too. A 128K context window doesn't mean every task benefits from 128K of text. Irrelevant context can make retrieval worse, add latency, and burn memory for no useful result. I'd rather retrieve the relevant part of a document than dump the whole thing into a huge context and hope the model finds the sentence I meant.
+So "it's a 14B model" is incomplete information. I need to know how it's quantized, how much context it's configured for, and whether my machine can keep it where it belongs. The best model is the one that answers before I forget what I was trying to do.
 
 ## I hardcode the context size
 
@@ -106,7 +109,7 @@ Ollama lets you set runtime parameters per request, but I prefer to bake importa
 I use a `Modelfile` for this:
 
 ```text
-FROM qwen3:14b
+FROM qwen2.5-coder:14b
 
 PARAMETER num_ctx 8192
 PARAMETER temperature 0.2
@@ -119,27 +122,45 @@ You are a concise, practical assistant. Prefer accurate answers over confident g
 Then I create a named model from it:
 
 ```bash
-ollama create qwen3-local -f Modelfile
-ollama run qwen3-local
+ollama create coder-local -f Modelfile
+ollama run coder-local
 ```
 
-The important line for this post is `PARAMETER num_ctx 8192`. I pin the context size in the `Modelfile` rather than passing it per request. Eight thousand tokens covers most of what I ask a local model to do while keeping memory use predictable. When a job genuinely needs more, I create a deliberate variant and take the hardware cost on purpose.
+The important line is `PARAMETER num_ctx 8192`. Pinning the context size in the `Modelfile` rather than passing it per request keeps memory predictable, and 8K covers most of what I ask a local model to do. When a job needs more, I build a deliberate higher-context variant, `coder-local-32k` for the coding agent below, and take the hardware cost on purpose.
 
-It's a small thing that removes a surprising amount of ambiguity. A model name tells me which weights I'm using; the `Modelfile` tells me how I expect that model to behave. It's configuration in version control instead of settings I have to reconstruct from memory every time.
+It's a small thing that removes a surprising amount of ambiguity. The model name tells me which weights I'm using; the `Modelfile` tells me how the model should behave. Configuration in version control, instead of settings I reconstruct from memory every time.
 
 ## What I actually plugged it into
 
-The abstract case for local models is fine, but the reason I keep the setup around is that two things I already run are wired into it.
+The abstract case for local models is fine, but the reason I keep the setup around is that two things I already run are wired into it. Both handle the kind of data I've written about keeping on my own machines, [genetic data](/posts/making-sense-of-my-dna/) and [medical images](/posts/looking-inside-the-disc-your-radiologist-gives-you/). Sending that to a hosted chatbot can be reasonable, but it should be a deliberate choice. With a local model, the default flips: the data stays here.
 
 The first is [OSGenome2](/posts/making-sense-of-my-dna/), the DNA viewer I've been adapting. It cross-references my raw genotypes against SNPedia, and the newer version can point a local model at a row and explain what it means in plain language. That only works as a privacy story if the model is local. Pasting my variants into a hosted chatbot would undo the entire point of keeping the genome on my own machine. Ollama keeps the explanation and the data on the same side of my firewall.
 
-The second is [Paperless-ngx](/posts/my-22cm-cube-that-replaced-the-cloud/), which runs on my home server and holds every document I own. On its own it does OCR; with **paperless-ai** bolted on, it points a language model at each incoming scan to suggest tags, titles, and correspondents. Those documents are exactly the kind of thing I don't want to feed a cloud API: bank letters, contracts, medical paperwork. Pointing paperless-ai at my local Ollama endpoint instead of a hosted provider means the sorting happens without a single page leaving the house.
+The second is [Paperless-ngx](/posts/my-22cm-cube-that-replaced-the-cloud/), which runs on my home server and holds every document I own. On its own it does OCR; with **paperless-ai** bolted on, it points a language model at each incoming scan to suggest tags, titles, and correspondents. Those documents are exactly the kind of thing I don't want to feed a cloud API: bank letters, contracts, medical paperwork. Here the model doesn't even live on the same box. Ollama runs on my gaming PC, and paperless-ai on the server points at it across my LAN. That's the nice part of Ollama exposing an HTTP API: the machine doing the sorting and the machine doing the inference can be different, as long as both are mine. The documents never leave the house.
 
-Neither of these needs a frontier model. They need a model that's available on `localhost`, private by default, and good enough at the narrow task. That's the whole pitch, and it's why the "small local services" idea stops being abstract once you have one or two of them running.
+Neither of these needs a frontier model. They need one that's reachable on the local network, private by default, and good enough at the narrow task. That's why the "small local services" idea stops being abstract once you have one or two of them running.
+
+## Wiring it into VS Code
+
+The one integration I most wanted was coding help inside the editor without shipping my code to a cloud API. This corner of the ecosystem moves fast, and I went through a few options before settling.
+
+[Continue](https://www.continue.dev/) used to be the obvious choice, but the project went read-only after an acquisition, and there was even a reported case of it falling back to a cloud service despite being set to local, exactly the failure mode a privacy setup can't afford. The various Ollama VS Code plugins are mid-reshuffle too, with the community extension deprecated in favor of an official one. I didn't want to anchor to something frozen or in flux.
+
+What I settled on is [Cline](https://cline.bot/). It's a provider-agnostic agent that reads files, proposes changes, and runs commands with my approval on each step, and it's open source and actively maintained. Pointing it at Ollama is a matter of choosing Ollama as the provider in its settings and giving it the local endpoint:
+
+```text
+API Provider:  Ollama
+Base URL:      http://localhost:11434
+Model:         coder-local-32k
+```
+
+Note the model: `coder-local-32k`, the higher-context variant from earlier. A coding agent stuffs open files, diffs, and repo context into every prompt, so the 8K default is nowhere near enough. It costs more memory, but here the context earns it.
+
+The honest caveat is capability. A good local coding model lands somewhere around 70 to 85 percent of a frontier cloud model on everyday single-file work, and the gap widens on multi-file reasoning. For scaffolding, explaining unfamiliar code, and small edits it earns its place; for a gnarly cross-cutting change I still reach for a stronger model.
 
 ## What local models are good at
 
-I reach for local models where privacy, availability, or cost matters more than raw capability. They're good at summarizing files, explaining code, rewriting text, extracting structured information, and answering questions about a carefully chosen local context. They also work well as a fast first pass: let the local model do the boring work, then bring in a stronger hosted model or a human when the stakes justify it.
+So what actually goes in that local slot? In practice it's the narrow, repeatable work: summarizing files, explaining code, rewriting text, extracting structured information, and answering questions about a carefully chosen local context. Local models also make a good fast first pass. Let the local one do the boring work, then bring in a stronger hosted model or a human when the stakes justify it. Cheap and private by default, powerful when the task earns it.
 
 They're less good at pretending to be a drop-in replacement for the best cloud models. Smaller local models hallucinate. They miss details. They'll confidently produce code that looks plausible and fails on the first run. A local model has the same fundamental problem as a hosted one, except now it's sitting in my office consuming my electricity.
 
@@ -149,158 +170,6 @@ For anything medical, financial, legal, or otherwise consequential, I treat the 
 
 There's a particular satisfaction in running a useful model on hardware I already owned. I'm not waiting on a provider, budgeting every experiment by the token, or uploading every private input to a service I don't control. I can try things freely, find the limits, and turn the useful experiments into small local services.
 
-The limits are real. Parameter count sets how much capability can fit. Quantization sets how much memory and precision I trade. Context size sets how much the model can hold at once and how much memory the runtime needs. Ignore any one of the three and the model card writes checks my GPU can't cash.
+None of this replaced the cloud models I still open every day. It sits next to them. The frontier model gets the hard reasoning; the local one gets everything that's private, routine, or not worth a round trip to someone else's server. Having both means the choice is mine to make per task instead of by default, and that turned out to be the part I value most.
 
 The 7900 XTX was a gaming purchase. It's still a gaming purchase. But now it's also a private, local inference machine, which makes the original decision look even better in hindsight. A good GPU is a good GPU. Sometimes it renders a game. Sometimes it reads a folder of notes. Either way, it's finally earning its electricity.
-
-
-=====DATA=====
- ollama run qwen3.6:35b-a3b --verbose "Write a haiku about garbage collection"
-Thinking...
-Thinking Process:
-
-1.  **Deconstruct the request:**
-    *   Topic: Garbage collection.
-    *   Format: Haiku (5-7-5 syllables).
-
-2.  **Brainstorming ideas/imagery related to garbage collection:**
-    *   Trash bins, curbs, trucks, bags, recycling, cleaning up, waste, memory (if programming context? The prompt
-doesn't specify, but usually "garbage collection" in AI prompts can be ambiguous. However, without a specific
-"coding" tag, I should assume the physical act unless context suggests otherwise. But often users ask about GC in
-CS. Let's look at the ambiguity. If I write about code, it might miss the user's intent. If I write about trash,
-it's safer for general audiences. However, "garbage collection" is a very common CS term. A haiku about code is
-usually more appreciated by devs. But a haiku about trash is universal. I'll aim for a double entendre or a clear
-physical one? Usually, when people ask for a haiku on a specific term without context, they might be looking for
-the creative interpretation of the concept. I'll write a haiku that works well for physical garbage but could
-slightly nod to clearing away waste (which applies to code too). Or better, just do a solid physical one. It's
-less risky. Let's check syllable counts for drafts.
-
-    *   *Draft 1:*
-        Blue bins by the curb (5)
-        Trucks come early in the morning (7)
-        Waste is taken away (7? No, "Waste is tak-en a-way" is 6. "Trash goes to the dump" is 5.)
-        Result:
-        Blue bins by the curb (5)
-        Trucks come early in the morning (7)
-        Trash gone from the street (5)
-        *Critique:* A bit boring, but accurate.
-
-    *   *Draft 2 (Poetic imagery):*
-        Bags await the truck (5)
-        Rattling sound fills the air now (7)
-        World cleans itself up (5)
-        *Critique:* "World cleans itself up" is 5? "World cleans it-self up" = 5. Good. "Rattling sound fills the
-air now" = Rat-tling sound fills the air now = 7. Good. "Bags await the truck" = Bags a-wait the truck = 5. Good.
-        *Result:*
-        Bags await the truck
-        Rattling sound fills the air now
-        World cleans itself up
-        *Critique:* "World cleans itself up" is a bit abstract.
-
-    *   *Draft 3 (Focus on routine/cycle):*
-        Curbside waiting bins (5)
-        Heavy trucks roll down the lane (7)
-        Renewal begins (5)
-        *Critique:*
-        Curb-side wait-ing bins = 5.
-        Heav-y trucks roll down the lane = 7.
-        Re-new-al be-gins = 5? Re-new-al is 3 syllables? "Re-nu-al"? No, usually "Ren-u-val" is 3. Or "Ren-val"?
-Dictionary says re-nyoo-ul. So "Re-nu-al" might be 3. Let's check "Renewal". Re-new-al. Yes, 3 syllables. So
-"Re-new-al be-gins" is 5.
-        *Result:* Good haiku. "Renewal begins" implies the cycle of collection leads to a fresh start. This is a
-nice touch.
-
-    *   *Draft 4 (Considering Code GC):*
-        If the user meant code:
-        Memory clears out (5)
-        Unused objects fade away (7)
-        Space freed for new data (7? No, space freed for new da-ta = 6.)
-        Space freed for new things (5).
-        *Result:*
-        Memory clears out
-        Unused objects fade away
-        Space freed for new things
-        *Critique:* This is also good. But I'll provide the physical one as default unless asked. The prompt is
-"Write a haiku about garbage collection". Usually, if it's code, they say "GC" or mention memory/programming. I'll
-stick to the physical interpretation.
-
-    *   *Refining Draft 3:*
-        Curbside waiting bins (5)
-        Heavy trucks roll down the lane (7)
-        Renewal begins (5)
-        *Syllable check:*
-        Curb-side wait-ing bins: 5.
-        Heav-y trucks roll down the lane: 7.
-        Re-new-al be-gins: 5.
-        *Content:* "Renewal begins" is a bit of a stretch for garbage, though metaphorically true. Maybe "Clean
-slate arrives"? No. "Fresh start for the street"? Fresh-start-for-the-street = 6. "Streets wake up clean" = 5.
-        *Alternative ending:*
-        Curbside waiting bins
-        Heavy trucks roll down the lane
-        Streets wake up clean (5)
-        *Critique:* "Streets wake up clean" is strong imagery. It personifies the street and shows the result.
-
-    *   *Final Polish:*
-        Bins line the curb (5)
-        Rumble of the heavy truck (7)
-        Streets are swept clean (5)
-        *Check:*
-        Bins line the curb: 5.
-        Rum-ble of the hea-vy truck: 7? Rum-bly is 2. Rum-ble of the heav-y truck = 7. Yes.
-        Streets are swept clean: 5.
-        *Result:* Simple, effective.
-
-    *   *Another option with more flavor:*
-        Bags wait for the haul (5)
-        Trucks gather up what we discard (7)
-        Fresh day starts anew (5)
-        *Check:*
-        Bags wait for the haul: 5.
-        Trucks gath-er up what we dis-card: 7.
-        Fresh day starts a-new: 5? A-new is often 2 syllables, sometimes elided to 1 in poetry? "New" can be 1 or
-2. Safer to avoid. "Fresh day begins" = 4. "A fresh start arrives" = 6. "World feels light again" = 6.
-        *Stick with "Streets wake up clean".*
-
-    *   *Final output structure:*
-        Bins line the curb,
-        Rumble of the heavy truck,
-        Streets wake up clean.
-
-        Wait, "Bins line the curb," has a comma. That doesn't change syllables.
-        Bins line the curb: 5.
-        Rum-ble of the hea-vy truck: 7.
-        Streets wake up clean: 5.
-        Perfect.
-
-3.  **Output generation:**
-    Bins line the curb,
-    Rumble of the heavy truck,
-    Streets wake up clean.
-...done thinking.
-
-Bins line the curb,
-Rumble of the heavy truck,
-Streets wake up clean.
-
-total duration:       1m9.9225693s
-load duration:        44.8768664s
-prompt eval count:    17 token(s)
-prompt eval duration: 458.07ms
-prompt eval rate:     37.11 tokens/s
-eval count:           1556 token(s)
-eval duration:        24.569784s
-eval rate:            63.33 tokens/s
-
- ollama run qwen2.5-coder:14b --verbose "Write a haiku about garbage collection"
-Heap overflows,
-Garbage collector sweeps,
-Memory reclaimed.
-
-total duration:       12.4396372s
-load duration:        12.1634424s
-prompt eval count:    36 token(s)
-prompt eval duration: 86.79ms
-prompt eval rate:     414.79 tokens/s
-eval count:           13 token(s)
-eval duration:        187.153ms
-eval rate:            69.46 tokens/s
