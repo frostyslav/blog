@@ -152,3 +152,155 @@ There's a particular satisfaction in running a useful model on hardware I alread
 The limits are real. Parameter count sets how much capability can fit. Quantization sets how much memory and precision I trade. Context size sets how much the model can hold at once and how much memory the runtime needs. Ignore any one of the three and the model card writes checks my GPU can't cash.
 
 The 7900 XTX was a gaming purchase. It's still a gaming purchase. But now it's also a private, local inference machine, which makes the original decision look even better in hindsight. A good GPU is a good GPU. Sometimes it renders a game. Sometimes it reads a folder of notes. Either way, it's finally earning its electricity.
+
+
+=====DATA=====
+ ollama run qwen3.6:35b-a3b --verbose "Write a haiku about garbage collection"
+Thinking...
+Thinking Process:
+
+1.  **Deconstruct the request:**
+    *   Topic: Garbage collection.
+    *   Format: Haiku (5-7-5 syllables).
+
+2.  **Brainstorming ideas/imagery related to garbage collection:**
+    *   Trash bins, curbs, trucks, bags, recycling, cleaning up, waste, memory (if programming context? The prompt
+doesn't specify, but usually "garbage collection" in AI prompts can be ambiguous. However, without a specific
+"coding" tag, I should assume the physical act unless context suggests otherwise. But often users ask about GC in
+CS. Let's look at the ambiguity. If I write about code, it might miss the user's intent. If I write about trash,
+it's safer for general audiences. However, "garbage collection" is a very common CS term. A haiku about code is
+usually more appreciated by devs. But a haiku about trash is universal. I'll aim for a double entendre or a clear
+physical one? Usually, when people ask for a haiku on a specific term without context, they might be looking for
+the creative interpretation of the concept. I'll write a haiku that works well for physical garbage but could
+slightly nod to clearing away waste (which applies to code too). Or better, just do a solid physical one. It's
+less risky. Let's check syllable counts for drafts.
+
+    *   *Draft 1:*
+        Blue bins by the curb (5)
+        Trucks come early in the morning (7)
+        Waste is taken away (7? No, "Waste is tak-en a-way" is 6. "Trash goes to the dump" is 5.)
+        Result:
+        Blue bins by the curb (5)
+        Trucks come early in the morning (7)
+        Trash gone from the street (5)
+        *Critique:* A bit boring, but accurate.
+
+    *   *Draft 2 (Poetic imagery):*
+        Bags await the truck (5)
+        Rattling sound fills the air now (7)
+        World cleans itself up (5)
+        *Critique:* "World cleans itself up" is 5? "World cleans it-self up" = 5. Good. "Rattling sound fills the
+air now" = Rat-tling sound fills the air now = 7. Good. "Bags await the truck" = Bags a-wait the truck = 5. Good.
+        *Result:*
+        Bags await the truck
+        Rattling sound fills the air now
+        World cleans itself up
+        *Critique:* "World cleans itself up" is a bit abstract.
+
+    *   *Draft 3 (Focus on routine/cycle):*
+        Curbside waiting bins (5)
+        Heavy trucks roll down the lane (7)
+        Renewal begins (5)
+        *Critique:*
+        Curb-side wait-ing bins = 5.
+        Heav-y trucks roll down the lane = 7.
+        Re-new-al be-gins = 5? Re-new-al is 3 syllables? "Re-nu-al"? No, usually "Ren-u-val" is 3. Or "Ren-val"?
+Dictionary says re-nyoo-ul. So "Re-nu-al" might be 3. Let's check "Renewal". Re-new-al. Yes, 3 syllables. So
+"Re-new-al be-gins" is 5.
+        *Result:* Good haiku. "Renewal begins" implies the cycle of collection leads to a fresh start. This is a
+nice touch.
+
+    *   *Draft 4 (Considering Code GC):*
+        If the user meant code:
+        Memory clears out (5)
+        Unused objects fade away (7)
+        Space freed for new data (7? No, space freed for new da-ta = 6.)
+        Space freed for new things (5).
+        *Result:*
+        Memory clears out
+        Unused objects fade away
+        Space freed for new things
+        *Critique:* This is also good. But I'll provide the physical one as default unless asked. The prompt is
+"Write a haiku about garbage collection". Usually, if it's code, they say "GC" or mention memory/programming. I'll
+stick to the physical interpretation.
+
+    *   *Refining Draft 3:*
+        Curbside waiting bins (5)
+        Heavy trucks roll down the lane (7)
+        Renewal begins (5)
+        *Syllable check:*
+        Curb-side wait-ing bins: 5.
+        Heav-y trucks roll down the lane: 7.
+        Re-new-al be-gins: 5.
+        *Content:* "Renewal begins" is a bit of a stretch for garbage, though metaphorically true. Maybe "Clean
+slate arrives"? No. "Fresh start for the street"? Fresh-start-for-the-street = 6. "Streets wake up clean" = 5.
+        *Alternative ending:*
+        Curbside waiting bins
+        Heavy trucks roll down the lane
+        Streets wake up clean (5)
+        *Critique:* "Streets wake up clean" is strong imagery. It personifies the street and shows the result.
+
+    *   *Final Polish:*
+        Bins line the curb (5)
+        Rumble of the heavy truck (7)
+        Streets are swept clean (5)
+        *Check:*
+        Bins line the curb: 5.
+        Rum-ble of the hea-vy truck: 7? Rum-bly is 2. Rum-ble of the heav-y truck = 7. Yes.
+        Streets are swept clean: 5.
+        *Result:* Simple, effective.
+
+    *   *Another option with more flavor:*
+        Bags wait for the haul (5)
+        Trucks gather up what we discard (7)
+        Fresh day starts anew (5)
+        *Check:*
+        Bags wait for the haul: 5.
+        Trucks gath-er up what we dis-card: 7.
+        Fresh day starts a-new: 5? A-new is often 2 syllables, sometimes elided to 1 in poetry? "New" can be 1 or
+2. Safer to avoid. "Fresh day begins" = 4. "A fresh start arrives" = 6. "World feels light again" = 6.
+        *Stick with "Streets wake up clean".*
+
+    *   *Final output structure:*
+        Bins line the curb,
+        Rumble of the heavy truck,
+        Streets wake up clean.
+
+        Wait, "Bins line the curb," has a comma. That doesn't change syllables.
+        Bins line the curb: 5.
+        Rum-ble of the hea-vy truck: 7.
+        Streets wake up clean: 5.
+        Perfect.
+
+3.  **Output generation:**
+    Bins line the curb,
+    Rumble of the heavy truck,
+    Streets wake up clean.
+...done thinking.
+
+Bins line the curb,
+Rumble of the heavy truck,
+Streets wake up clean.
+
+total duration:       1m9.9225693s
+load duration:        44.8768664s
+prompt eval count:    17 token(s)
+prompt eval duration: 458.07ms
+prompt eval rate:     37.11 tokens/s
+eval count:           1556 token(s)
+eval duration:        24.569784s
+eval rate:            63.33 tokens/s
+
+ ollama run qwen2.5-coder:14b --verbose "Write a haiku about garbage collection"
+Heap overflows,
+Garbage collector sweeps,
+Memory reclaimed.
+
+total duration:       12.4396372s
+load duration:        12.1634424s
+prompt eval count:    36 token(s)
+prompt eval duration: 86.79ms
+prompt eval rate:     414.79 tokens/s
+eval count:           13 token(s)
+eval duration:        187.153ms
+eval rate:            69.46 tokens/s
