@@ -85,6 +85,8 @@ Since the whole point was surviving the ATS-and-bots gauntlet, the site is built
 
 The site doesn't just render in a browser. The build also generates PDF versions of the CV automatically. Multiple versions, in fact: two per language, one with a phone number and one without.
 
+![The PDF generated from the same Jane Doe data, laid out for print](_cv-assets/cv-pdf.png)
+
 The download link on the site points to the version _without_ the phone number, which is the safer default for something publicly downloadable. If a recruiter needs the number, that version exists too.
 
 So the whole "maintain a Word doc for the PDF" problem simply evaporates. One repository, a handful of YAML files, and I get a live website, multiple localized PDFs, and machine-readable metadata, all from the same source. When something changes, I edit one YAML file and everything regenerates.
