@@ -42,7 +42,7 @@ I'll cover the VM-in-pod runtime in its own post. The short version: a pod is ju
 
 Anyone can deploy a container. The reason CertaScale was worth anything to an enterprise was the network layer, and that's the part I owned.
 
-Enterprises don't want "a container gets some random cluster IP." They want the workload to sit on *their* network, with the properties their network has always had:
+Enterprises don't want "a container gets some random cluster IP." They want the workload to sit on _their_ network, with the properties their network has always had:
 
 - **Static IP assignment** for the workloads that need a fixed address forever.
 - **DHCP assignment** for the ones that don't.

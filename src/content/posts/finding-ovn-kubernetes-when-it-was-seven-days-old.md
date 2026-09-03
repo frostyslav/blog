@@ -26,7 +26,7 @@ The customer came to us after another consultancy had already tried and failed t
 
 One day my manager came to me and said, more or less: you are now responsible for building a Software-Defined Network.
 
-Here's where my head was at that moment. I knew what each of those words meant *separately*. I knew what software was. I'd worked as a network engineer before this, so I knew networks, protocols, and VLANs thoroughly, the administration side especially. But "Software-Defined Network," as a thing I was now supposed to build from whatever the last team had left behind? I had no idea what I was supposed to do.
+Here's where my head was at that moment. I knew what each of those words meant _separately_. I knew what software was. I'd worked as a network engineer before this, so I knew networks, protocols, and VLANs thoroughly, the administration side especially. But "Software-Defined Network," as a thing I was now supposed to build from whatever the last team had left behind? I had no idea what I was supposed to do.
 
 That's the real starting line for this series. Not a confident architect surveying his options, but one person who'd just been handed a failed project and a title, googling in mild panic.
 
@@ -36,7 +36,7 @@ Before I could build anything, I had to understand what I'd inherited. What the 
 
 It didn't work.
 
-I spent about a week trying to make it run as-is, assuming there was something real in there I was failing to start correctly. There wasn't. Eventually I gave up on running it and rewrote it from scratch, line by line, purely to see what it was supposed to *produce*. That's when I found it.
+I spent about a week trying to make it run as-is, assuming there was something real in there I was failing to start correctly. There wasn't. Eventually I gave up on running it and rewrote it from scratch, line by line, purely to see what it was supposed to _produce_. That's when I found it.
 
 It installed Open vSwitch and created a bridge.
 
@@ -56,7 +56,7 @@ Writing your own software-defined network is a great way to spend three years an
 
 The foundation I found was OVN, Open Virtual Network. It's the piece of the Open vSwitch project that adds native virtual networking: you describe the network you want as logical switches and routers, and OVN figures out the flows that make it real on every host. [OVN had been announced on the OVS mailing list in January 2015](https://developers.redhat.com/blog/2019/08/30/the-clean-break-of-open-virtual-network-from-open-vswitch), so by 2016 it was young but real.
 
-What was *not* real yet was the Kubernetes part. There was a separate project, `ovn-kubernetes`, whose entire job was to wire OVN in as a Kubernetes network plugin: watch the Kubernetes API, and when pods come and go, translate that into OVN logical ports, switches, and routers. That project's [very first commit landed on August 11, 2016](https://github.com/ovn-kubernetes/ovn-kubernetes/commit/81bbb29). It was a one-liner: "Add a .gitignore file."
+What was _not_ real yet was the Kubernetes part. There was a separate project, `ovn-kubernetes`, whose entire job was to wire OVN in as a Kubernetes network plugin: watch the Kubernetes API, and when pods come and go, translate that into OVN logical ports, switches, and routers. That project's [very first commit landed on August 11, 2016](https://github.com/ovn-kubernetes/ovn-kubernetes/commit/81bbb29). It was a one-liner: "Add a .gitignore file."
 
 When I found the repo, it was about a week past that. There was almost nothing in it. A skeleton, some early Python, an idea. I looked at that and thought: this is exactly the layer I need, it just doesn't exist yet.
 
@@ -112,6 +112,6 @@ All of that sat on the decision made in front of a week-old repo.
 
 ## The lesson, if there is one
 
-Betting on something this early isn't reckless if you're honest about *which* part is risky. The risk in `ovn-kubernetes` wasn't the hard networking, OVN had that. The risk was that a young glue project might stall, and that risk I could absorb, because I was willing to be one of the people writing the glue. "This doesn't exist yet" is a reason to walk away when you need it to already exist. It's a reason to lean in when you're prepared to help build it.
+Betting on something this early isn't reckless if you're honest about _which_ part is risky. The risk in `ovn-kubernetes` wasn't the hard networking, OVN had that. The risk was that a young glue project might stall, and that risk I could absorb, because I was willing to be one of the people writing the glue. "This doesn't exist yet" is a reason to walk away when you need it to already exist. It's a reason to lean in when you're prepared to help build it.
 
 The next post gets concrete about what the customer actually asked for, and what this foundation had to deliver first: an enterprise network. Static and DHCP addressing, VLANs, and QoS that behaved the way their existing network already did, on a version of Kubernetes that wanted nothing to do with any of it. The flat network came later, and for a different reason: not a customer request, but an architectural call to move VMs seamlessly between nodes. But that's the post after.
