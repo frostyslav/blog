@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" role="img" aria-label="Simplified CertaScale architecture, redrawn from memory">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#6b7280"/>
+    </marker>
+    <style>
+      .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; rx: 8; }
+      .upstream { fill: #f3f4f6; stroke: #9ca3af; }
+      .custom { fill: #fde8cf; stroke: #d98a2b; }
+      .group { fill: none; stroke: #cbd5e1; stroke-width: 1.5; stroke-dasharray: 5 4; rx: 12; }
+      .lbl { fill: #111827; font-size: 14px; }
+      .lbl-sm { fill: #374151; font-size: 12px; }
+      .grouplbl { fill: #6b7280; font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+      .title { fill: #111827; font-size: 16px; font-weight: 700; }
+      .flow { stroke: #6b7280; stroke-width: 1.6; fill: none; }
+      @media (prefers-color-scheme: dark) {
+        .box { fill: #1f2430; stroke: #4b5563; }
+        .upstream { fill: #262b38; stroke: #4b5563; }
+        .custom { fill: #3a2e1c; stroke: #d98a2b; }
+        .group { stroke: #3f4657; }
+        .lbl { fill: #e5e7eb; }
+        .lbl-sm { fill: #cbd5e1; }
+        .grouplbl { fill: #94a3b8; }
+        .title { fill: #f3f4f6; }
+        .flow { stroke: #94a3b8; }
+      }
+    </style>
+  </defs>
+
+  <text x="20" y="30" class="title">CertaScale, simplified (redrawn from memory)</text>
+
+  <!-- Boot chain -->
+  <text x="20" y="66" class="grouplbl">Boot chain</text>
+  <rect x="20" y="76" width="150" height="44" class="box upstream" rx="8"/>
+  <text x="95" y="103" class="lbl" text-anchor="middle">Bare metal / host</text>
+
+  <rect x="20" y="140" width="150" height="44" class="box upstream" rx="8"/>
+  <text x="95" y="161" class="lbl" text-anchor="middle">CoreOS</text>
+  <text x="95" y="177" class="lbl-sm" text-anchor="middle">+ container runtime</text>
+
+  <rect x="20" y="204" width="150" height="44" class="box upstream" rx="8"/>
+  <text x="95" y="225" class="lbl" text-anchor="middle">systemd</text>
+  <text x="95" y="241" class="lbl-sm" text-anchor="middle">starts kubelet</text>
+
+  <rect x="20" y="268" width="150" height="44" class="box upstream" rx="8"/>
+  <text x="95" y="289" class="lbl" text-anchor="middle">kubelet</text>
+  <text x="95" y="305" class="lbl-sm" text-anchor="middle">reads static manifests</text>
+
+  <path class="flow" d="M95 120 L95 140" marker-end="url(#arrow)"/>
+  <path class="flow" d="M95 184 L95 204" marker-end="url(#arrow)"/>
+  <path class="flow" d="M95 248 L95 268" marker-end="url(#arrow)"/>
+  <path class="flow" d="M170 290 L210 290" marker-end="url(#arrow)"/>
+
+  <!-- Control plane group -->
+  <rect x="210" y="52" width="330" height="300" class="group"/>
+  <text x="228" y="74" class="grouplbl">Control plane (static pods)</text>
+
+  <rect x="230" y="90" width="140" height="40" class="box upstream" rx="8"/>
+  <text x="300" y="115" class="lbl" text-anchor="middle">kube-apiserver</text>
+
+  <rect x="230" y="140" width="140" height="40" class="box upstream" rx="8"/>
+  <text x="300" y="165" class="lbl" text-anchor="middle">kube-scheduler</text>
+
+  <rect x="230" y="190" width="140" height="40" class="box upstream" rx="8"/>
+  <text x="300" y="209" class="lbl" text-anchor="middle">controller-</text>
+  <text x="300" y="224" class="lbl" text-anchor="middle">manager</text>
+
+  <rect x="230" y="240" width="140" height="40" class="box upstream" rx="8"/>
+  <text x="300" y="265" class="lbl" text-anchor="middle">etcd</text>
+
+  <rect x="390" y="90" width="130" height="40" class="box custom" rx="8"/>
+  <text x="455" y="115" class="lbl" text-anchor="middle">sdn-controller</text>
+
+  <rect x="390" y="140" width="130" height="40" class="box custom" rx="8"/>
+  <text x="455" y="165" class="lbl" text-anchor="middle">openvswitch</text>
+
+  <rect x="390" y="190" width="130" height="40" class="box custom" rx="8"/>
+  <text x="455" y="215" class="lbl" text-anchor="middle">onboarding + UI</text>
+
+  <rect x="390" y="240" width="130" height="40" class="box custom" rx="8"/>
+  <text x="455" y="265" class="lbl" text-anchor="middle">addon-manager</text>
+
+  <!-- OVN / SDN group -->
+  <text x="580" y="66" class="grouplbl">Network layer</text>
+  <rect x="580" y="76" width="300" height="120" class="box custom" rx="10"/>
+  <text x="730" y="104" class="lbl" text-anchor="middle" font-weight="700">OVN / ovn-kubernetes</text>
+  <text x="730" y="128" class="lbl-sm" text-anchor="middle">flat overlay, static + DHCP addressing</text>
+  <text x="730" y="146" class="lbl-sm" text-anchor="middle">VLANs, RFC 4594 QoS, OVSDB ORM</text>
+  <text x="730" y="164" class="lbl-sm" text-anchor="middle">DPDK fast path (edge pivot)</text>
+  <text x="730" y="182" class="lbl-sm" text-anchor="middle">programs the data plane on every node</text>
+
+  <path class="flow" d="M520 130 L580 130" marker-end="url(#arrow)"/>
+
+  <!-- Canvas -->
+  <rect x="580" y="250" width="300" height="56" class="box" rx="10"/>
+  <text x="730" y="274" class="lbl" text-anchor="middle" font-weight="700">Drag-and-drop web canvas</text>
+  <text x="730" y="292" class="lbl-sm" text-anchor="middle">drop a workload &#8594; it deploys</text>
+  <path class="flow" d="M580 264 L556 264 L556 44 L300 44 L300 90" marker-end="url(#arrow)"/>
+
+  <!-- Workloads group -->
+  <rect x="20" y="400" width="860" height="190" class="group"/>
+  <text x="38" y="422" class="grouplbl">Workloads (scheduled as pods)</text>
+
+  <rect x="60" y="440" width="360" height="120" class="box" rx="10"/>
+  <text x="240" y="470" class="lbl" text-anchor="middle" font-weight="700">App pod</text>
+  <text x="240" y="494" class="lbl-sm" text-anchor="middle">ordinary Linux container</text>
+  <rect x="120" y="508" width="240" height="34" class="box upstream" rx="6"/>
+  <text x="240" y="530" class="lbl-sm" text-anchor="middle">application process</text>
+
+  <rect x="480" y="440" width="360" height="120" class="box" rx="10"/>
+  <text x="660" y="470" class="lbl" text-anchor="middle" font-weight="700">VM pod</text>
+  <text x="660" y="494" class="lbl-sm" text-anchor="middle">pod runs KVM, VM boots inside</text>
+  <rect x="540" y="508" width="240" height="34" class="box custom" rx="6"/>
+  <text x="660" y="530" class="lbl-sm" text-anchor="middle">KVM &#8594; guest VM</text>
+
+  <path class="flow" d="M300 312 L300 360 L240 360 L240 440" marker-end="url(#arrow)"/>
+  <path class="flow" d="M300 312 L300 360 L660 360 L660 440" marker-end="url(#arrow)"/>
+
+  <!-- Legend (top-right, clear of all boxes and flows) -->
+  <rect x="638" y="20" width="14" height="14" class="box upstream" rx="3"/>
+  <text x="658" y="31" class="lbl-sm">upstream</text>
+  <rect x="733" y="20" width="14" height="14" class="box custom" rx="3"/>
+  <text x="753" y="31" class="lbl-sm">CertaScale-built</text>
+</svg>
