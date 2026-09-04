@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 470" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" role="img" aria-label="How a pod reaches VLAN 116 through OVN and onto the enterprise physical fabric">
+  <defs>
+    <marker id="arrowU" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#6b7280"/>
+    </marker>
+    <style>
+      .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+      .phys { fill: #f3f4f6; stroke: #9ca3af; }
+      .custom { fill: #fde8cf; stroke: #d98a2b; }
+      .pod { fill: #ffffff; stroke: #2563eb; stroke-width: 1.5; }
+      .group { fill: none; stroke: #cbd5e1; stroke-width: 1.5; stroke-dasharray: 5 4; }
+      .lbl { fill: #111827; font-size: 14px; }
+      .lbl-sm { fill: #374151; font-size: 12px; }
+      .grouplbl { fill: #6b7280; font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+      .title { fill: #111827; font-size: 16px; font-weight: 700; }
+      .flow { stroke: #6b7280; stroke-width: 1.6; fill: none; }
+      .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+      @media (prefers-color-scheme: dark) {
+        .box { fill: #1f2430; stroke: #4b5563; }
+        .phys { fill: #262b38; stroke: #4b5563; }
+        .custom { fill: #3a2e1c; stroke: #d98a2b; }
+        .pod { fill: #1f2430; stroke: #3b82f6; }
+        .group { stroke: #3f4657; }
+        .lbl { fill: #e5e7eb; }
+        .lbl-sm { fill: #cbd5e1; }
+        .grouplbl { fill: #94a3b8; }
+        .title { fill: #f3f4f6; }
+        .flow { stroke: #94a3b8; }
+      }
+    </style>
+  </defs>
+
+  <text x="20" y="30" class="title">A pod on VLAN 116, the underlay path</text>
+
+  <!-- Pod -->
+  <rect x="30" y="150" width="150" height="70" class="pod" rx="10"/>
+  <text x="105" y="182" class="lbl" text-anchor="middle" font-weight="700">Pod</text>
+  <text x="105" y="202" class="lbl-sm mono" text-anchor="middle">10.250.116.20/24</text>
+
+  <!-- OVN group -->
+  <rect x="230" y="60" width="420" height="330" class="group" rx="12"/>
+  <text x="248" y="82" class="grouplbl">OVN (CertaScale-built mapping)</text>
+
+  <rect x="260" y="150" width="170" height="70" class="custom" rx="10"/>
+  <text x="345" y="182" class="lbl" text-anchor="middle" font-weight="700">Logical switch</text>
+  <text x="345" y="202" class="lbl-sm" text-anchor="middle">vlan116</text>
+
+  <rect x="470" y="150" width="150" height="70" class="custom" rx="10"/>
+  <text x="545" y="176" class="lbl" text-anchor="middle" font-weight="700">localnet port</text>
+  <text x="545" y="195" class="lbl-sm mono" text-anchor="middle">tag: 116</text>
+  <text x="545" y="211" class="lbl-sm" text-anchor="middle">to physical net</text>
+
+  <!-- Logical router (for external / SNAT) -->
+  <rect x="260" y="280" width="360" height="76" class="custom" rx="10"/>
+  <text x="440" y="308" class="lbl" text-anchor="middle" font-weight="700">Logical router</text>
+  <text x="440" y="328" class="lbl-sm mono" text-anchor="middle">gw 10.250.116.111/24 · SNAT to external</text>
+  <text x="440" y="344" class="lbl-sm" text-anchor="middle">for overlay traffic leaving the VLAN</text>
+
+  <!-- Physical fabric -->
+  <rect x="700" y="150" width="190" height="70" class="phys" rx="10"/>
+  <text x="795" y="176" class="lbl" text-anchor="middle" font-weight="700">Physical switch</text>
+  <text x="795" y="195" class="lbl-sm" text-anchor="middle">VLAN 116</text>
+  <text x="795" y="211" class="lbl-sm mono" text-anchor="middle">10.250.116.0/24</text>
+
+  <!-- other hosts on VLAN 116 -->
+  <rect x="700" y="280" width="190" height="60" class="phys" rx="10"/>
+  <text x="795" y="306" class="lbl" text-anchor="middle">Other hosts on VLAN 116</text>
+  <text x="795" y="324" class="lbl-sm" text-anchor="middle">servers, VMs, firewall</text>
+
+  <!-- flows -->
+  <path class="flow" d="M180 185 L260 185" marker-end="url(#arrow2)"/>
+  <path class="flow" d="M430 185 L470 185" marker-end="url(#arrowU)"/>
+  <path class="flow" d="M620 185 L700 185" marker-end="url(#arrowU)"/>
+  <path class="flow" d="M795 220 L795 280" marker-end="url(#arrowU)"/>
+  <path class="flow" d="M345 220 L345 280" marker-end="url(#arrowU)"/>
+
+  <text x="460" y="430" class="lbl-sm" text-anchor="middle">The pod gets a VLAN 116 address and reaches the rest of the VLAN exactly like a physical host.</text>
+  <text x="460" y="448" class="lbl-sm" text-anchor="middle">We didn't build VLAN handling; we mapped "pod wants VLAN 116" onto OVN objects OVN already understood.</text>
+</svg>

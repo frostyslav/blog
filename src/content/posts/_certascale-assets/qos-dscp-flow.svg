@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 360" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" role="img" aria-label="How a QoS class on a pod interface becomes a DSCP marking the enterprise core switch already honors">
+  <defs>
+    <marker id="arrowQ" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#6b7280"/>
+    </marker>
+    <style>
+      .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+      .phys { fill: #f3f4f6; stroke: #9ca3af; }
+      .custom { fill: #fde8cf; stroke: #d98a2b; }
+      .pod { fill: #ffffff; stroke: #2563eb; stroke-width: 1.5; }
+      .pkt { fill: #eef2ff; stroke: #6366f1; stroke-width: 1.5; }
+      .lbl { fill: #111827; font-size: 14px; }
+      .lbl-sm { fill: #374151; font-size: 12px; }
+      .title { fill: #111827; font-size: 16px; font-weight: 700; }
+      .flow { stroke: #6b7280; stroke-width: 1.6; fill: none; }
+      .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+      @media (prefers-color-scheme: dark) {
+        .box { fill: #1f2430; stroke: #4b5563; }
+        .phys { fill: #262b38; stroke: #4b5563; }
+        .custom { fill: #3a2e1c; stroke: #d98a2b; }
+        .pod { fill: #1f2430; stroke: #3b82f6; }
+        .pkt { fill: #232a44; stroke: #818cf8; }
+        .lbl { fill: #e5e7eb; }
+        .lbl-sm { fill: #cbd5e1; }
+        .title { fill: #f3f4f6; }
+        .flow { stroke: #94a3b8; }
+      }
+    </style>
+  </defs>
+
+  <text x="20" y="30" class="title">QoS: our label becomes a marking their switch already honors</text>
+
+  <!-- Pod with service_class -->
+  <rect x="30" y="110" width="200" height="110" class="pod" rx="10"/>
+  <text x="130" y="140" class="lbl" text-anchor="middle" font-weight="700">Pod interface</text>
+  <text x="130" y="166" class="lbl-sm mono" text-anchor="middle">service_class:</text>
+  <text x="130" y="184" class="lbl-sm mono" text-anchor="middle">"lowlatency"</text>
+  <text x="130" y="206" class="lbl-sm" text-anchor="middle">declared in annotation</text>
+
+  <!-- OVN marks DSCP -->
+  <rect x="300" y="110" width="200" height="110" class="custom" rx="10"/>
+  <text x="400" y="140" class="lbl" text-anchor="middle" font-weight="700">OVN logical switch</text>
+  <text x="400" y="166" class="lbl-sm" text-anchor="middle">sets DSCP field</text>
+  <text x="400" y="188" class="lbl-sm" text-anchor="middle">per RFC 4594</text>
+  <text x="400" y="208" class="lbl-sm" text-anchor="middle">(CertaScale-built)</text>
+
+  <!-- Packet on wire -->
+  <rect x="560" y="128" width="150" height="74" class="pkt" rx="10"/>
+  <text x="635" y="156" class="lbl" text-anchor="middle" font-weight="700">Packet</text>
+  <text x="635" y="180" class="lbl-sm mono" text-anchor="middle">DSCP 22</text>
+  <text x="635" y="196" class="lbl-sm" text-anchor="middle">(AF23)</text>
+
+  <!-- Enterprise core switch -->
+  <rect x="740" y="100" width="160" height="130" class="phys" rx="10"/>
+  <text x="820" y="128" class="lbl" text-anchor="middle" font-weight="700">Enterprise</text>
+  <text x="820" y="146" class="lbl" text-anchor="middle" font-weight="700">core switch</text>
+  <text x="820" y="172" class="lbl-sm" text-anchor="middle">already configured</text>
+  <text x="820" y="190" class="lbl-sm" text-anchor="middle">for RFC 4594</text>
+  <text x="820" y="212" class="lbl-sm" text-anchor="middle">treats DSCP 22 correctly</text>
+
+  <path class="flow" d="M230 165 L300 165" marker-end="url(#arrowQ)"/>
+  <path class="flow" d="M500 165 L560 165" marker-end="url(#arrowQ)"/>
+  <path class="flow" d="M710 165 L740 165" marker-end="url(#arrowQ)"/>
+
+  <text x="460" y="285" class="lbl-sm" text-anchor="middle">We didn't invent a QoS scheme. The DSCP values are the RFC's, so the enterprise's existing policy</text>
+  <text x="460" y="303" class="lbl-sm" text-anchor="middle">applies to our pods' traffic with no changes on their side, no trust in a CertaScale model required.</text>
+</svg>

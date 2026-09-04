@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 430" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" role="img" aria-label="Underlay (native) versus overlay networking, side by side">
+  <defs>
+    <marker id="arrow2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#6b7280"/>
+    </marker>
+    <style>
+      .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+      .phys { fill: #f3f4f6; stroke: #9ca3af; }
+      .custom { fill: #fde8cf; stroke: #d98a2b; }
+      .pod { fill: #ffffff; stroke: #2563eb; stroke-width: 1.5; }
+      .panel { fill: none; stroke: #cbd5e1; stroke-width: 1.5; stroke-dasharray: 5 4; }
+      .lbl { fill: #111827; font-size: 14px; }
+      .lbl-sm { fill: #374151; font-size: 12px; }
+      .title { fill: #111827; font-size: 16px; font-weight: 700; }
+      .paneltitle { fill: #111827; font-size: 15px; font-weight: 700; }
+      .flow { stroke: #6b7280; stroke-width: 1.6; fill: none; }
+      @media (prefers-color-scheme: dark) {
+        .box { fill: #1f2430; stroke: #4b5563; }
+        .phys { fill: #262b38; stroke: #4b5563; }
+        .custom { fill: #3a2e1c; stroke: #d98a2b; }
+        .pod { fill: #1f2430; stroke: #3b82f6; }
+        .panel { stroke: #3f4657; }
+        .lbl { fill: #e5e7eb; }
+        .lbl-sm { fill: #cbd5e1; }
+        .title { fill: #f3f4f6; }
+        .paneltitle { fill: #f3f4f6; }
+        .flow { stroke: #94a3b8; }
+      }
+    </style>
+  </defs>
+
+  <text x="20" y="30" class="title">Underlay (native) vs overlay</text>
+
+  <!-- Left panel: underlay / native -->
+  <rect x="20" y="52" width="410" height="360" class="panel" rx="12"/>
+  <text x="40" y="80" class="paneltitle">Underlay (native)</text>
+  <text x="40" y="100" class="lbl-sm">pod lives directly on a real VLAN</text>
+
+  <rect x="150" y="120" width="150" height="46" class="pod" rx="8"/>
+  <text x="225" y="142" class="lbl" text-anchor="middle" font-weight="700">Pod</text>
+  <text x="225" y="158" class="lbl-sm" text-anchor="middle">10.250.116.20</text>
+
+  <rect x="130" y="206" width="190" height="46" class="custom" rx="8"/>
+  <text x="225" y="228" class="lbl" text-anchor="middle">OVN localnet port</text>
+  <text x="225" y="244" class="lbl-sm" text-anchor="middle">VLAN tag 116</text>
+
+  <rect x="130" y="292" width="190" height="46" class="phys" rx="8"/>
+  <text x="225" y="314" class="lbl" text-anchor="middle">Physical fabric</text>
+  <text x="225" y="330" class="lbl-sm" text-anchor="middle">VLAN 116 · 10.250.116.0/24</text>
+
+  <text x="225" y="372" class="lbl-sm" text-anchor="middle">reachable like any physical host</text>
+  <text x="225" y="390" class="lbl-sm" text-anchor="middle">on the enterprise's VLAN</text>
+
+  <path class="flow" d="M225 166 L225 206" marker-end="url(#arrow2)"/>
+  <path class="flow" d="M225 252 L225 292" marker-end="url(#arrow2)"/>
+
+  <!-- Right panel: overlay -->
+  <rect x="470" y="52" width="410" height="360" class="panel" rx="12"/>
+  <text x="490" y="80" class="paneltitle">Overlay</text>
+  <text x="490" y="100" class="lbl-sm">pod lives in a virtual network we manage</text>
+
+  <rect x="600" y="120" width="150" height="46" class="pod" rx="8"/>
+  <text x="675" y="142" class="lbl" text-anchor="middle" font-weight="700">Pod</text>
+  <text x="675" y="158" class="lbl-sm" text-anchor="middle">overlay address</text>
+
+  <rect x="580" y="206" width="190" height="46" class="custom" rx="8"/>
+  <text x="675" y="228" class="lbl" text-anchor="middle">Managed overlay</text>
+  <text x="675" y="244" class="lbl-sm" text-anchor="middle">virtual, global resource</text>
+
+  <rect x="580" y="292" width="190" height="46" class="custom" rx="8"/>
+  <text x="675" y="314" class="lbl" text-anchor="middle">Gateway / NAT</text>
+  <text x="675" y="330" class="lbl-sm" text-anchor="middle">controlled egress</text>
+
+  <text x="675" y="372" class="lbl-sm" text-anchor="middle">pods talk to each other;</text>
+  <text x="675" y="390" class="lbl-sm" text-anchor="middle">reach out only through the gateway</text>
+
+  <path class="flow" d="M675 166 L675 206" marker-end="url(#arrow2)"/>
+  <path class="flow" d="M675 252 L675 292" marker-end="url(#arrow2)"/>
+</svg>
