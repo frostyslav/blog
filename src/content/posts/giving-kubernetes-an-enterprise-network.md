@@ -20,9 +20,9 @@ This is the third post in a series about [CertaScale](/posts/the-private-cloud-w
 
 ## The ask was the network, not the cloud
 
-One fact shaped every decision in this layer: our customer wasn't the enterprise whose network we had to fit into. Our customer was building a *private cloud product*, and their whole pitch was that it would drop cleanly into the networks of *their* enterprise customers. So we weren't integrating with one network we could study for months. We were building something that had to integrate, out of the box, with whatever a large enterprise already had: VLANs, addressing plans, firewall rules, and QoS policies tuned over years, none of which we'd get to see in advance.
+One fact shaped every decision in this layer: our customer wasn't the enterprise whose network we had to fit into. Our customer was building a _private cloud product_, and their whole pitch was that it would drop cleanly into the networks of _their_ enterprise customers. So we weren't integrating with one network we could study for months. We were building something that had to integrate, out of the box, with whatever a large enterprise already had: VLANs, addressing plans, firewall rules, and QoS policies tuned over years, none of which we'd get to see in advance.
 
-That flips the problem. If you only have to satisfy one network, you can hardcode to its quirks. If you have to satisfy *any* enterprise network the sales team might sign next quarter, you can't. You have to speak the protocols and conventions every enterprise network already speaks, so that "integrate with the enterprise's network" is a configuration exercise on site, not a development project each time.
+That flips the problem. If you only have to satisfy one network, you can hardcode to its quirks. If you have to satisfy _any_ enterprise network the sales team might sign next quarter, you can't. You have to speak the protocols and conventions every enterprise network already speaks, so that "integrate with the enterprise's network" is a configuration exercise on site, not a development project each time.
 
 So the requirement, stated plainly, was: a pod should be able to sit on an enterprise network exactly like a physical server or a traditional VM does. Same VLAN. Same kind of IP address, assigned the same way. Same quality-of-service treatment. If the enterprise's network team had a spreadsheet that said "VLAN 116 is the payments segment, 10.250.116.0/24, QoS class X for voice," a workload deployed on our cloud should be able to land there and obey those rules, without us having built anything specific to that enterprise.
 
@@ -114,7 +114,7 @@ Enterprises assign addresses two ways, and a workload had to support either.
 
 **Static** is for the things that need a fixed, known address forever: the database everything points at, the service the firewall has an explicit rule for. The address is declared, and the workload comes up with exactly that address.
 
-**DHCP** is for everything else, the workloads that just need *an* address on the right VLAN and don't care which. The enterprise expectation carries a catch: a DHCP address should behave like a real DHCP lease, handed out by something that looks like a DHCP server on that segment.
+**DHCP** is for everything else, the workloads that just need _an_ address on the right VLAN and don't care which. The enterprise expectation carries a catch: a DHCP address should behave like a real DHCP lease, handed out by something that looks like a DHCP server on that segment.
 
 For plain container workloads, honoring the declared address is straightforward, because we control the pod's network namespace and can configure the interface directly. Virtual machines were the hard case, and they shaped the design. You can't reach inside a guest VM to configure its interface; the guest brings itself up. So for VMs, DHCP wasn't a convenience, it was the mechanism. We ran a DHCP server inside OVN for the VM's segment, and the guest's own DHCP client picked up the address, gateway, and routes exactly as it would on a physical network. From inside the VM, booting on our cloud was indistinguishable from booting on a real DHCP-served enterprise LAN.
 
@@ -126,20 +126,20 @@ Enterprise networks classify traffic using [Differentiated Services](https://too
 
 The mapping we exposed was the RFC's own set of twelve classes, each with its DSCP value and the kind of traffic it's meant for:
 
-| Service class          | DSCP | Annotation value | Intended for                          |
-| ---------------------- | ---- | ---------------- | ------------------------------------- |
-| Network Control        | 48   | `networkcontrol` | Routing and control-plane messages    |
-| Telephony              | 46   | `telephony`      | Voice, fixed-rate, low-latency        |
-| Signaling              | 40   | `signaling`      | Call/session signaling                |
-| Multimedia Conferencing| 38   | `conferencing`   | Video conferencing, rate-adaptive     |
-| Real-Time Interactive  | 32   | `realtime`       | Interactive RTP/UDP streams           |
-| Multimedia Streaming   | 30   | `streaming`      | Buffered streaming, elastic rate      |
-| Broadcast Video        | 24   | `broadcast`      | Constant/variable-rate, inelastic     |
-| Low-Latency Data       | 22   | `lowlatency`     | Interactive, latency-sensitive apps   |
-| OAM                    | 16   | `oam`            | Operations, administration, mgmt      |
-| High-Throughput Data   | 14   | `bulk`           | Long-lived elastic transfers          |
-| Low-Priority Data      | 8    | `lowpriority`    | Non-real-time, background             |
-| Standard               | 0    | `standard`       | Everything else                       |
+| Service class           | DSCP | Annotation value | Intended for                        |
+| ----------------------- | ---- | ---------------- | ----------------------------------- |
+| Network Control         | 48   | `networkcontrol` | Routing and control-plane messages  |
+| Telephony               | 46   | `telephony`      | Voice, fixed-rate, low-latency      |
+| Signaling               | 40   | `signaling`      | Call/session signaling              |
+| Multimedia Conferencing | 38   | `conferencing`   | Video conferencing, rate-adaptive   |
+| Real-Time Interactive   | 32   | `realtime`       | Interactive RTP/UDP streams         |
+| Multimedia Streaming    | 30   | `streaming`      | Buffered streaming, elastic rate    |
+| Broadcast Video         | 24   | `broadcast`      | Constant/variable-rate, inelastic   |
+| Low-Latency Data        | 22   | `lowlatency`     | Interactive, latency-sensitive apps |
+| OAM                     | 16   | `oam`            | Operations, administration, mgmt    |
+| High-Throughput Data    | 14   | `bulk`           | Long-lived elastic transfers        |
+| Low-Priority Data       | 8    | `lowpriority`    | Non-real-time, background           |
+| Standard                | 0    | `standard`       | Everything else                     |
 
 You picked one per interface with the `service_class` field you saw in the annotation above. Tag an interface `lowlatency` and its traffic left marked DSCP 22; tag it `bulk` and it left marked 14, so the enterprise network gave the backup traffic and the interactive traffic the treatment its existing policy already prescribed for those markings.
 
