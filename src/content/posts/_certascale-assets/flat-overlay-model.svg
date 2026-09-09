@@ -48,12 +48,13 @@
   <!-- node A with its segment -->
   <rect x="48" y="96" width="168" height="150" rx="8" class="phys"/>
   <text x="132" y="116" text-anchor="middle" class="lbl-sm">Node A</text>
-  <rect x="66" y="128" width="132" height="42" rx="8" class="seg"/>
-  <text x="132" y="146" text-anchor="middle" class="lbl-sm">segment / VLAN</text>
-  <text x="132" y="162" text-anchor="middle" class="lbl-sm">10.0.0.0/24 broadcast domain</text>
-  <rect x="90" y="184" width="84" height="46" rx="8" class="pod"/>
-  <text x="132" y="205" text-anchor="middle" class="lbl-sm">workload</text>
-  <text x="132" y="221" text-anchor="middle" class="mono">10.0.0.33/24</text>
+  <rect x="56" y="124" width="152" height="56" rx="8" class="seg"/>
+  <text x="132" y="143" text-anchor="middle" class="lbl-sm">segment / VLAN</text>
+  <text x="132" y="160" text-anchor="middle" class="lbl-sm">10.0.0.0/24</text>
+  <text x="132" y="174" text-anchor="middle" class="lbl-sm">broadcast domain</text>
+  <rect x="80" y="192" width="104" height="46" rx="8" class="pod"/>
+  <text x="132" y="213" text-anchor="middle" class="lbl-sm">workload</text>
+  <text x="132" y="229" text-anchor="middle" class="mono">10.0.0.33/24</text>
 
   <!-- node B empty -->
   <rect x="248" y="96" width="168" height="150" rx="8" class="phys"/>
@@ -62,7 +63,7 @@
   <text x="332" y="194" text-anchor="middle" class="lbl-sm">of the fabric</text>
 
   <!-- move attempt -->
-  <path class="flowbad" d="M180 207 C 232 207, 250 207, 300 207" marker-end="url(#arrowX)"/>
+  <path class="flowbad" d="M184 215 C 232 215, 250 215, 300 215" marker-end="url(#arrowX)"/>
   <text x="230" y="286" text-anchor="middle" class="badlbl">move breaks the tie</text>
   <text x="230" y="306" text-anchor="middle" class="lbl-sm">ARP goes stale, the segment</text>
   <text x="230" y="324" text-anchor="middle" class="lbl-sm">stays on Node A, the address</text>
@@ -84,7 +85,7 @@
   <text x="768" y="202" text-anchor="middle" class="lbl-sm">Node B</text>
 
   <!-- workload on B after move -->
-  <rect x="726" y="228" width="84" height="46" rx="8" class="pod"/>
+  <rect x="716" y="228" width="104" height="46" rx="8" class="pod"/>
   <text x="768" y="249" text-anchor="middle" class="lbl-sm">workload</text>
   <text x="768" y="265" text-anchor="middle" class="mono">10.0.0.33/32</text>
 
