@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 440" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" role="img" aria-label="Traditional L2 addressing versus the flat overlay, side by side">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="arrowX" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#dc2626"/>
+    </marker>
+    <style>
+      .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+      .phys { fill: #f3f4f6; stroke: #9ca3af; }
+      .seg { fill: #eef2ff; stroke: #6366f1; stroke-width: 1.5; }
+      .fabric { fill: #ecfdf5; stroke: #10b981; stroke-width: 1.5; }
+      .pod { fill: #ffffff; stroke: #2563eb; stroke-width: 1.5; }
+      .panel { fill: none; stroke: #cbd5e1; stroke-width: 1.5; stroke-dasharray: 5 4; }
+      .lbl { fill: #111827; font-size: 14px; }
+      .lbl-sm { fill: #374151; font-size: 12px; }
+      .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fill: #111827; font-size: 12px; }
+      .title { fill: #111827; font-size: 16px; font-weight: 700; }
+      .paneltitle { fill: #111827; font-size: 15px; font-weight: 700; }
+      .flow { stroke: #6b7280; stroke-width: 1.6; fill: none; }
+      .flowgood { stroke: #10b981; stroke-width: 1.8; fill: none; }
+      .flowbad { stroke: #dc2626; stroke-width: 1.8; fill: none; stroke-dasharray: 5 4; }
+      .badlbl { fill: #dc2626; font-size: 12px; font-weight: 600; }
+      @media (prefers-color-scheme: dark) {
+        .box { fill: #1f2430; stroke: #4b5563; }
+        .phys { fill: #262b38; stroke: #4b5563; }
+        .seg { fill: #23263a; stroke: #818cf8; }
+        .fabric { fill: #16281f; stroke: #34d399; }
+        .pod { fill: #1f2430; stroke: #3b82f6; }
+        .panel { stroke: #3f4657; }
+        .lbl { fill: #e5e7eb; }
+        .lbl-sm { fill: #cbd5e1; }
+        .mono { fill: #e5e7eb; }
+        .title { fill: #f3f4f6; }
+        .paneltitle { fill: #f3f4f6; }
+        .flow { stroke: #94a3b8; }
+      }
+    </style>
+  </defs>
+
+  <text x="450" y="28" text-anchor="middle" class="title">An address as a place vs. an address as a route</text>
+
+  <!-- Left panel: traditional L2 -->
+  <rect x="20" y="48" width="420" height="372" rx="10" class="panel"/>
+  <text x="230" y="74" text-anchor="middle" class="paneltitle">Traditional L2: address belongs to a segment</text>
+
+  <!-- node A with its segment -->
+  <rect x="48" y="96" width="168" height="150" rx="8" class="phys"/>
+  <text x="132" y="116" text-anchor="middle" class="lbl-sm">Node A</text>
+  <rect x="66" y="128" width="132" height="42" rx="8" class="seg"/>
+  <text x="132" y="146" text-anchor="middle" class="lbl-sm">segment / VLAN</text>
+  <text x="132" y="162" text-anchor="middle" class="lbl-sm">10.0.0.0/24 broadcast domain</text>
+  <rect x="90" y="184" width="84" height="46" rx="8" class="pod"/>
+  <text x="132" y="205" text-anchor="middle" class="lbl-sm">workload</text>
+  <text x="132" y="221" text-anchor="middle" class="mono">10.0.0.33/24</text>
+
+  <!-- node B empty -->
+  <rect x="248" y="96" width="168" height="150" rx="8" class="phys"/>
+  <text x="332" y="116" text-anchor="middle" class="lbl-sm">Node B</text>
+  <text x="332" y="176" text-anchor="middle" class="lbl-sm">different part</text>
+  <text x="332" y="194" text-anchor="middle" class="lbl-sm">of the fabric</text>
+
+  <!-- move attempt -->
+  <path class="flowbad" d="M180 207 C 232 207, 250 207, 300 207" marker-end="url(#arrowX)"/>
+  <text x="230" y="286" text-anchor="middle" class="badlbl">move breaks the tie</text>
+  <text x="230" y="306" text-anchor="middle" class="lbl-sm">ARP goes stale, the segment</text>
+  <text x="230" y="324" text-anchor="middle" class="lbl-sm">stays on Node A, the address</text>
+  <text x="230" y="342" text-anchor="middle" class="lbl-sm">does not come along for free</text>
+
+  <!-- Right panel: flat overlay -->
+  <rect x="460" y="48" width="420" height="372" rx="10" class="panel"/>
+  <text x="670" y="74" text-anchor="middle" class="paneltitle">Flat overlay: address is a /32 route</text>
+
+  <!-- global fabric band -->
+  <rect x="488" y="96" width="364" height="56" rx="8" class="fabric"/>
+  <text x="670" y="120" text-anchor="middle" class="lbl-sm">global routing fabric, no subnet-wide L2</text>
+  <text x="670" y="138" text-anchor="middle" class="mono">route 10.0.0.33/32 -&gt; wherever it lives now</text>
+
+  <!-- two nodes -->
+  <rect x="488" y="182" width="168" height="120" rx="8" class="phys"/>
+  <text x="572" y="202" text-anchor="middle" class="lbl-sm">Node A</text>
+  <rect x="684" y="182" width="168" height="120" rx="8" class="phys"/>
+  <text x="768" y="202" text-anchor="middle" class="lbl-sm">Node B</text>
+
+  <!-- workload on B after move -->
+  <rect x="726" y="228" width="84" height="46" rx="8" class="pod"/>
+  <text x="768" y="249" text-anchor="middle" class="lbl-sm">workload</text>
+  <text x="768" y="265" text-anchor="middle" class="mono">10.0.0.33/32</text>
+
+  <!-- fabric to node links -->
+  <path class="flow" d="M572 152 L572 182" marker-end="url(#arrow)"/>
+  <path class="flowgood" d="M768 152 L768 228" marker-end="url(#arrow)"/>
+
+  <text x="670" y="330" text-anchor="middle" class="lbl-sm">moving the workload just repoints its route;</text>
+  <text x="670" y="348" text-anchor="middle" class="lbl-sm">the /32 address travels with it, nothing has to ARP</text>
+</svg>

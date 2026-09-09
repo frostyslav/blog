@@ -11,7 +11,7 @@ tags:
   - sdn
   - qos
   - war-stories
-description: The third post in the CertaScale series. Our customer was building a private cloud that had to drop into any enterprise's network, so we spoke the language every enterprise already speaks and extended it to Kubernetes pods: VLANs, static and DHCP addressing, and RFC 4594 QoS.
+description: "The third post in the CertaScale series. Our customer was building a private cloud that had to drop into any enterprise's network, so we spoke the language every enterprise already speaks and extended it to Kubernetes pods: VLANs, static and DHCP addressing, and RFC 4594 QoS."
 ---
 
 This is the third post in a series about [CertaScale](/posts/the-private-cloud-we-built-before-it-was-cool/), the private cloud I helped build between 2016 and 2019. The [previous post](/posts/finding-ovn-kubernetes-when-it-was-seven-days-old/) was about choosing a foundation: OVN, and the week-old `ovn-kubernetes` integration I bet on. This post is about the thing that foundation had to deliver first, because it was the whole reason our customer was building the product: a private cloud that could slot into an enterprise network.

@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 380" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" role="img" aria-label="The address migration sequence, left to right, showing an address CRD following a workload from node A to node B">
+  <defs>
+    <marker id="marrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#6b7280"/>
+    </marker>
+    <style>
+      .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+      .phys { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+      .crd { fill: #fde8cf; stroke: #d98a2b; stroke-width: 1.5; }
+      .pod { fill: #ffffff; stroke: #2563eb; stroke-width: 1.5; }
+      .gone { fill: #ffffff; stroke: #dc2626; stroke-width: 1.5; stroke-dasharray: 5 4; }
+      .step { fill: #eef2ff; stroke: #6366f1; stroke-width: 1.5; }
+      .lbl { fill: #111827; font-size: 14px; }
+      .lbl-sm { fill: #374151; font-size: 12px; }
+      .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fill: #111827; font-size: 11.5px; }
+      .title { fill: #111827; font-size: 16px; font-weight: 700; }
+      .steptitle { fill: #111827; font-size: 13px; font-weight: 700; }
+      .flow { stroke: #6b7280; stroke-width: 1.8; fill: none; }
+      @media (prefers-color-scheme: dark) {
+        .box { fill: #1f2430; stroke: #4b5563; }
+        .phys { fill: #262b38; stroke: #4b5563; }
+        .crd { fill: #3a2e1c; stroke: #d98a2b; }
+        .pod { fill: #1f2430; stroke: #3b82f6; }
+        .gone { fill: #1f2430; stroke: #f87171; }
+        .step { fill: #23263a; stroke: #818cf8; }
+        .lbl { fill: #e5e7eb; }
+        .lbl-sm { fill: #cbd5e1; }
+        .mono { fill: #e5e7eb; }
+        .title { fill: #f3f4f6; }
+        .steptitle { fill: #f3f4f6; }
+        .flow { stroke: #94a3b8; }
+      }
+    </style>
+  </defs>
+
+  <text x="480" y="28" text-anchor="middle" class="title">The address CRD follows the workload from Node A to Node B</text>
+
+  <!-- Step 1: running on A -->
+  <rect x="20" y="52" width="280" height="300" rx="10" class="step"/>
+  <text x="160" y="76" text-anchor="middle" class="steptitle">1. Running on Node A</text>
+
+  <rect x="48" y="92" width="224" height="96" rx="8" class="phys"/>
+  <text x="160" y="112" text-anchor="middle" class="lbl-sm">Node A</text>
+  <rect x="96" y="126" width="128" height="46" rx="8" class="pod"/>
+  <text x="160" y="147" text-anchor="middle" class="lbl-sm">pod</text>
+  <text x="160" y="163" text-anchor="middle" class="mono">10.0.0.33</text>
+
+  <rect x="48" y="212" width="224" height="120" rx="8" class="crd"/>
+  <text x="160" y="232" text-anchor="middle" class="lbl-sm">address CRD</text>
+  <text x="160" y="256" text-anchor="middle" class="mono">ip: 10.0.0.33</text>
+  <text x="160" y="276" text-anchor="middle" class="mono">host: node-A</text>
+  <text x="160" y="296" text-anchor="middle" class="mono">reserved: true</text>
+  <text x="160" y="316" text-anchor="middle" class="mono">deleted: false</text>
+
+  <!-- Step 2: deleted on A, grace period -->
+  <rect x="340" y="52" width="280" height="300" rx="10" class="step"/>
+  <text x="480" y="76" text-anchor="middle" class="steptitle">2. Deleted on A, held in grace</text>
+
+  <rect x="368" y="92" width="224" height="96" rx="8" class="phys"/>
+  <text x="480" y="112" text-anchor="middle" class="lbl-sm">Node A</text>
+  <rect x="416" y="126" width="128" height="46" rx="8" class="gone"/>
+  <text x="480" y="147" text-anchor="middle" class="lbl-sm">pod gone</text>
+  <text x="480" y="163" text-anchor="middle" class="mono">port removed</text>
+
+  <rect x="368" y="212" width="224" height="120" rx="8" class="crd"/>
+  <text x="480" y="232" text-anchor="middle" class="lbl-sm">address CRD kept ~10 min</text>
+  <text x="480" y="256" text-anchor="middle" class="mono">ip: 10.0.0.33</text>
+  <text x="480" y="276" text-anchor="middle" class="mono">deleted: true</text>
+  <text x="480" y="296" text-anchor="middle" class="mono">deletion-time: set</text>
+  <text x="480" y="316" text-anchor="middle" class="mono">not yet reclaimed</text>
+
+  <!-- Step 3: up on B, same address -->
+  <rect x="660" y="52" width="280" height="300" rx="10" class="step"/>
+  <text x="800" y="76" text-anchor="middle" class="steptitle">3. Up on Node B, same address</text>
+
+  <rect x="688" y="92" width="224" height="96" rx="8" class="phys"/>
+  <text x="800" y="112" text-anchor="middle" class="lbl-sm">Node B</text>
+  <rect x="736" y="126" width="128" height="46" rx="8" class="pod"/>
+  <text x="800" y="147" text-anchor="middle" class="lbl-sm">pod</text>
+  <text x="800" y="163" text-anchor="middle" class="mono">10.0.0.33</text>
+
+  <rect x="688" y="212" width="224" height="120" rx="8" class="crd"/>
+  <text x="800" y="232" text-anchor="middle" class="lbl-sm">CRD matched by pod name</text>
+  <text x="800" y="256" text-anchor="middle" class="mono">ip: 10.0.0.33</text>
+  <text x="800" y="276" text-anchor="middle" class="mono">host: node-B</text>
+  <text x="800" y="296" text-anchor="middle" class="mono">deleted: false</text>
+  <text x="800" y="316" text-anchor="middle" class="mono">route repointed to B</text>
+
+  <!-- flow arrows between panels -->
+  <path class="flow" d="M300 202 L340 202" marker-end="url(#marrow)"/>
+  <path class="flow" d="M620 202 L660 202" marker-end="url(#marrow)"/>
+</svg>
