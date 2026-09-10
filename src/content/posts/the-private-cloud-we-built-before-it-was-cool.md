@@ -2,7 +2,7 @@
 author: Rostyslav Fridman
 pubDatetime: 2026-09-03T09:00:00Z
 title: The private cloud we built before it was cool
-featured: false
+featured: true
 draft: false
 tags:
   - kubernetes

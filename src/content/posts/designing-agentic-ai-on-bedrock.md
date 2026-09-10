@@ -2,7 +2,7 @@
 author: Rostyslav Fridman
 pubDatetime: 2026-09-01T09:00:00Z
 title: Designing agentic AI on Bedrock, a real-world journey
-featured: false
+featured: true
 draft: false
 tags:
   - aws
