@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 470" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" role="img" aria-label="A VM pod next to an app pod on the same node, showing KVM inside the pod and the shared network path out through Open vSwitch and OVN">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#6b7280"/>
+    </marker>
+    <style>
+      .node { fill: #f3f4f6; stroke: #9ca3af; stroke-width: 1.5; }
+      .pod { fill: #ffffff; stroke: #2563eb; stroke-width: 1.5; }
+      .guest { fill: #eef2ff; stroke: #6366f1; stroke-width: 1.5; }
+      .kvm { fill: #fef3c7; stroke: #d97706; stroke-width: 1.5; }
+      .app { fill: #ecfdf5; stroke: #10b981; stroke-width: 1.5; }
+      .net { fill: #f5f3ff; stroke: #8b5cf6; stroke-width: 1.5; }
+      .kube { fill: #ffffff; stroke: #0ea5e9; stroke-width: 1.5; }
+      .lbl { fill: #111827; font-size: 14px; }
+      .lbl-sm { fill: #374151; font-size: 12px; }
+      .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fill: #111827; font-size: 11px; }
+      .title { fill: #111827; font-size: 16px; font-weight: 700; }
+      .caption { fill: #111827; font-size: 13px; font-weight: 700; }
+      .flow { stroke: #6b7280; stroke-width: 1.6; fill: none; }
+      @media (prefers-color-scheme: dark) {
+        .node { fill: #262b38; stroke: #4b5563; }
+        .pod { fill: #1f2430; stroke: #3b82f6; }
+        .guest { fill: #23263a; stroke: #818cf8; }
+        .kvm { fill: #2b2417; stroke: #f59e0b; }
+        .app { fill: #16281f; stroke: #34d399; }
+        .net { fill: #221f33; stroke: #a78bfa; }
+        .kube { fill: #16232b; stroke: #38bdf8; }
+        .lbl { fill: #e5e7eb; }
+        .lbl-sm { fill: #cbd5e1; }
+        .mono { fill: #e5e7eb; }
+        .title { fill: #f3f4f6; }
+        .caption { fill: #f3f4f6; }
+        .flow { stroke: #94a3b8; }
+      }
+    </style>
+  </defs>
+
+  <text x="450" y="28" text-anchor="middle" class="title">Two pods on one node: a VM pod and an app pod</text>
+
+  <!-- Node boundary -->
+  <rect x="20" y="48" width="860" height="352" rx="12" class="node"/>
+  <text x="42" y="72" class="lbl">Node (CoreOS): kubelet supervises both pods identically</text>
+
+  <!-- VM pod -->
+  <rect x="48" y="92" width="360" height="230" rx="10" class="pod"/>
+  <text x="228" y="114" text-anchor="middle" class="lbl">VM pod</text>
+  <text x="228" y="132" text-anchor="middle" class="lbl-sm">privileged, requests /dev/kvm</text>
+
+  <rect x="72" y="146" width="312" height="60" rx="8" class="kvm"/>
+  <text x="228" y="169" text-anchor="middle" class="lbl-sm">QEMU / KVM (the pod's main process)</text>
+  <text x="228" y="190" text-anchor="middle" class="lbl-sm">hardware-assisted virtualization via /dev/kvm</text>
+
+  <rect x="96" y="214" width="264" height="88" rx="8" class="guest"/>
+  <text x="228" y="236" text-anchor="middle" class="lbl-sm">Guest OS (unmodified)</text>
+  <text x="228" y="256" text-anchor="middle" class="lbl-sm">Windows / Ubuntu / CentOS ...</text>
+  <text x="228" y="278" text-anchor="middle" class="lbl-sm">brings its own network up</text>
+  <text x="228" y="295" text-anchor="middle" class="mono">gets 10.0.0.33/32 via DHCP</text>
+
+  <!-- App pod -->
+  <rect x="452" y="92" width="300" height="230" rx="10" class="pod"/>
+  <text x="602" y="114" text-anchor="middle" class="lbl">App pod</text>
+  <text x="602" y="132" text-anchor="middle" class="lbl-sm">ordinary container</text>
+
+  <rect x="480" y="176" width="244" height="110" rx="8" class="app"/>
+  <text x="602" y="212" text-anchor="middle" class="lbl-sm">Application process</text>
+  <text x="602" y="236" text-anchor="middle" class="lbl-sm">CNI configures the interface</text>
+  <text x="602" y="256" text-anchor="middle" class="lbl-sm">directly (we own the netns)</text>
+  <text x="602" y="278" text-anchor="middle" class="mono">10.0.0.34/32 set on eth0</text>
+
+  <!-- Shared network layer -->
+  <rect x="788" y="92" width="72" height="230" rx="10" class="net"/>
+  <text x="818" y="207" text-anchor="middle" class="lbl-sm" transform="rotate(-90 818 207)">Open vSwitch + OVN</text>
+  <text x="836" y="207" text-anchor="middle" class="lbl-sm" transform="rotate(-90 836 207)">(VLANs, flat overlay, QoS)</text>
+
+  <!-- Flows into the shared network -->
+  <!-- App pod: out its right edge, straight across to the upper part of the network bar -->
+  <path class="flow" d="M724 231 H 788" marker-end="url(#arrow)"/>
+  <!-- VM pod: out the guest box, down into the gap below the pods, across, then up to the lower part of the network bar, clear of the app pod's text -->
+  <path class="flow" d="M360 290 C 400 290, 400 333, 460 333 H 740 C 772 333, 776 302, 788 290" marker-end="url(#arrow)"/>
+
+  <text x="450" y="352" text-anchor="middle" class="caption">Both plug into the same network machinery; the VM just plugs in one hop removed, behind the hypervisor.</text>
+  <text x="450" y="384" text-anchor="middle" class="lbl-sm">To Kubernetes both are just pods: scheduled, health-checked, and torn down the same way.</text>
+</svg>

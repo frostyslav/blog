@@ -12,7 +12,7 @@ tags:
   - dpdk
   - private-cloud
   - war-stories
-description: From 2016 to 2019 I helped build a private cloud on top of very early Kubernetes, with a drag-and-drop canvas, VMs running inside pods before Kata existed, and an enterprise-grade network layer I led, from GCP-style flat overlays to a 2-to-20 Gbps DPDK data path. The company is gone. The story shouldn't be.
+description: From 2016 to 2019 I helped build a private cloud on top of very early Kubernetes, with a drag-and-drop canvas, VMs running inside pods before Kata existed, and an enterprise-grade network layer I led, from GCP-style flat overlays to a 12-to-60 Gbps DPDK data path. The company is gone. The story shouldn't be.
 ---
 
 Between 2016 and 2019 I worked on a private cloud. Not a wrapper around someone else's cloud, an actual private cloud: bare metal servers, a Kubernetes control plane, and a product that let you drag workloads onto a canvas and watch them deploy. It was called CertaScale. The company doesn't exist anymore, so there's no product to sell you and no roadmap to defend. That's exactly why I want to write it down.
@@ -65,9 +65,9 @@ The idea I'm proudest of, and this one was our own architectural decision rather
 
 ### When the company tried to become a 5G-edge box
 
-Somewhere in the middle of all this, the owners tried to pivot. Private cloud was a hard sell; 5G edge was the hot thing, and the same software running on a small box at the edge of a carrier network suddenly looked like a product. The catch: edge means line-rate packet processing on commodity hardware, and our data path went through the kernel, which topped out around 2 Gbps on the COTS servers we were testing.
+Somewhere in the middle of all this, the owners tried to pivot. Private cloud was a hard sell; 5G edge was the hot thing, and the same software running on a small box at the edge of a carrier network suddenly looked like a product. The catch: edge means line-rate packet processing on commodity hardware, and our data path went through the kernel, which topped out around 12 Gbps on the 100 Gbps COTS servers we were testing.
 
-So I took the network data path out of the kernel. Using DPDK with Open vSwitch, poll-mode drivers, hugepages, NICs bound straight to userspace, we pushed the same commodity hardware from about 2 Gbps to roughly 20 Gbps. A 10x jump with no new hardware, just a different way of moving packets. That work, and the pivot that motivated it, is a post on its own.
+So I took the network data path out of the kernel. Using DPDK with Open vSwitch, poll-mode drivers, hugepages, NICs bound straight to userspace, we pushed the same commodity hardware from about 12 Gbps to roughly 60 Gbps. A 5x jump with no new hardware, just a different way of moving packets. That work, and the pivot that motivated it, is a post on its own.
 
 ### The ORM I'm still salty about
 
@@ -86,7 +86,7 @@ I tried to fit the whole thing into one post and it doesn't work. There's too mu
 3. **Giving Kubernetes an enterprise network.** VLANs, static and DHCP addressing, and RFC 4594 QoS via DSCP in OVN, meeting enterprise networks on their own terms.
 4. **A flat network, GCP-style, on early Kubernetes.** The `/32`-plus-routes model, the address operator and CRD pool, live migration of addresses, and why the overlay was a global resource.
 5. **Running VMs inside pods in 2016, before Kata existed.** The VM-in-pod runtime: KVM inside a pod, how it scheduled and migrated, and how we bridged the guest network out. Plus where secure runtimes like gVisor fit later.
-6. **From 2 to 20 Gbps with DPDK, when we tried to become a 5G-edge box.** The pivot from private cloud to edge, and taking the data path out of the kernel: DPDK on OVS, hugepages, poll-mode drivers, and userspace-bound NICs.
+6. **From 12 to 60 Gbps with DPDK, when we tried to become a 5G-edge box.** The pivot from private cloud to edge, and taking the data path out of the kernel: DPDK on OVS, hugepages, poll-mode drivers, and userspace-bound NICs.
 7. **The OVSDB ORM I wasn't allowed to open-source.** What it did, why it mattered, and a bit of a eulogy.
 
 The network is the through-line of the whole series, so that's where I'm headed first. If that reads like a lot, it's because it was a lot. It ran for years and it worked. The next post starts where the whole network layer started: a repo that was seven days old, and the decision to build a private cloud's networking on top of it.
