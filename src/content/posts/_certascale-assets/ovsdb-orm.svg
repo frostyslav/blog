@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 470" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" role="img" aria-label="How the OVSDB ORM turned Go objects into OVSDB transactions, generated from the schema, versus talking to OVN databases by hand">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="arrowV" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#8b5cf6"/>
+    </marker>
+    <style>
+      .code { fill: #ffffff; stroke: #2563eb; stroke-width: 1.5; }
+      .orm { fill: #f5f3ff; stroke: #8b5cf6; stroke-width: 1.5; }
+      .schema { fill: #fef3c7; stroke: #d97706; stroke-width: 1.5; }
+      .db { fill: #ecfdf5; stroke: #10b981; stroke-width: 1.5; }
+      .lbl { fill: #111827; font-size: 13px; }
+      .lbl-sm { fill: #374151; font-size: 12px; }
+      .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; fill: #111827; font-size: 11px; }
+      .title { fill: #111827; font-size: 16px; font-weight: 700; }
+      .caption { fill: #111827; font-size: 12px; font-weight: 600; }
+      .note { fill: #6b7280; font-size: 11px; }
+      .flow { stroke: #6b7280; stroke-width: 1.6; fill: none; }
+      .flowGen { stroke: #8b5cf6; stroke-width: 1.6; fill: none; stroke-dasharray: 5 4; }
+      @media (prefers-color-scheme: dark) {
+        .code { fill: #1f2430; stroke: #3b82f6; }
+        .orm { fill: #221f33; stroke: #a78bfa; }
+        .schema { fill: #2b2417; stroke: #f59e0b; }
+        .db { fill: #16281f; stroke: #34d399; }
+        .lbl { fill: #e5e7eb; }
+        .lbl-sm { fill: #cbd5e1; }
+        .mono { fill: #e5e7eb; }
+        .title { fill: #f3f4f6; }
+        .caption { fill: #f3f4f6; }
+        .note { fill: #94a3b8; }
+        .flow { stroke: #94a3b8; }
+      }
+    </style>
+  </defs>
+
+  <text x="450" y="28" text-anchor="middle" class="title">Go objects in, OVSDB transactions out</text>
+
+  <!-- Main horizontal pipeline -->
+  <!-- Go code -->
+  <rect x="24" y="150" width="196" height="150" rx="10" class="code"/>
+  <text x="122" y="172" text-anchor="middle" class="lbl">Our Go code</text>
+  <text x="122" y="196" text-anchor="middle" class="mono">LogicalSwitch("ls1")</text>
+  <text x="122" y="214" text-anchor="middle" class="mono">.AddPort(...)</text>
+  <text x="122" y="232" text-anchor="middle" class="mono">.AddACL(match, ...)</text>
+  <text x="122" y="264" text-anchor="middle" class="lbl-sm">objects &amp; references,</text>
+  <text x="122" y="281" text-anchor="middle" class="lbl-sm">no raw JSON, no CLI</text>
+
+  <!-- ORM -->
+  <rect x="352" y="132" width="196" height="186" rx="10" class="orm"/>
+  <text x="450" y="154" text-anchor="middle" class="lbl">The ORM</text>
+  <text x="450" y="180" text-anchor="middle" class="lbl-sm">typed structs per table</text>
+  <text x="450" y="200" text-anchor="middle" class="lbl-sm">refs as *pointers</text>
+  <text x="450" y="220" text-anchor="middle" class="lbl-sm">enums &amp; sized ints</text>
+  <text x="450" y="246" text-anchor="middle" class="caption">ACL match compiler</text>
+  <text x="450" y="264" text-anchor="middle" class="lbl-sm">infix &#8594; RPN &#8594; string</text>
+  <text x="450" y="282" text-anchor="middle" class="lbl-sm">(&amp;&amp;, ||, parentheses)</text>
+  <text x="450" y="302" text-anchor="middle" class="lbl-sm">builds the transaction</text>
+
+  <!-- Databases -->
+  <rect x="680" y="150" width="196" height="150" rx="10" class="db"/>
+  <text x="778" y="172" text-anchor="middle" class="lbl">OVN / OVS databases</text>
+  <text x="778" y="198" text-anchor="middle" class="lbl-sm">OVSDB protocol (RFC 7047)</text>
+  <text x="778" y="220" text-anchor="middle" class="lbl-sm">northbound (NB)</text>
+  <text x="778" y="238" text-anchor="middle" class="lbl-sm">southbound (SB)</text>
+  <text x="778" y="256" text-anchor="middle" class="lbl-sm">Open vSwitch DB</text>
+  <text x="778" y="282" text-anchor="middle" class="note">insert / mutate / transact</text>
+
+  <!-- pipeline arrows -->
+  <path class="flow" d="M220 225 L352 225" marker-end="url(#arrow)"/>
+  <path class="flow" d="M548 225 L680 225" marker-end="url(#arrow)"/>
+  <text x="286" y="216" text-anchor="middle" class="note">method calls</text>
+  <text x="614" y="216" text-anchor="middle" class="note">JSON-RPC</text>
+
+  <!-- schema generation -->
+  <rect x="352" y="52" width="196" height="52" rx="10" class="schema"/>
+  <text x="450" y="74" text-anchor="middle" class="lbl-sm">OVSDB schema (JSON)</text>
+  <text x="450" y="92" text-anchor="middle" class="lbl-sm">+ man-page docs (XML)</text>
+  <path class="flowGen" d="M450 104 L450 132" marker-end="url(#arrowV)"/>
+  <text x="600" y="122" text-anchor="middle" class="note">generates the typed structs</text>
+
+  <text x="450" y="356" text-anchor="middle" class="caption">The objects are generated from the schema, so they stay faithful to the database as OVN changes.</text>
+  <text x="450" y="384" text-anchor="middle" class="note">Everything the CLI could do, reproduced in code. We never shelled out to ovn-nbctl.</text>
+</svg>
