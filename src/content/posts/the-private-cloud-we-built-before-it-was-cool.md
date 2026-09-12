@@ -82,11 +82,11 @@ CertaScale doesn't exist. The code is gone or locked away. But the ideas were go
 I tried to fit the whole thing into one post and it doesn't work. There's too much, and each piece deserves room. So here's how I'm breaking it up. This post is the overview. The rest go deep:
 
 1. **The private cloud we built before it was cool** (this one). What CertaScale was, why the network mattered, and how the pieces fit.
-2. **Finding ovn-kubernetes when it was seven days old.** Contributing to a brand-new integration, learning OVS internals, and the Python-to-Go rewrite when the team changed.
-3. **Giving Kubernetes an enterprise network.** VLANs, static and DHCP addressing, and RFC 4594 QoS via DSCP in OVN, meeting enterprise networks on their own terms.
-4. **A flat network, GCP-style, on early Kubernetes.** The `/32`-plus-routes model, the address operator and CRD pool, live migration of addresses, and why the overlay was a global resource.
-5. **Running VMs inside pods in 2016, before Kata existed.** The VM-in-pod runtime: KVM inside a pod, how it scheduled and migrated, and how we bridged the guest network out. Plus where secure runtimes like gVisor fit later.
-6. **From 12 to 60 Gbps with DPDK, when we tried to become a 5G-edge box.** The pivot from private cloud to edge, and taking the data path out of the kernel: DPDK on OVS, hugepages, poll-mode drivers, and userspace-bound NICs.
-7. **The OVSDB ORM I wasn't allowed to open-source.** What it did, why it mattered, and a bit of a eulogy.
+2. **[Finding ovn-kubernetes when it was seven days old.](/posts/finding-ovn-kubernetes-when-it-was-seven-days-old/)** Contributing to a brand-new integration, learning OVS internals, and the Python-to-Go rewrite when the team changed.
+3. **[Giving Kubernetes an enterprise network.](/posts/giving-kubernetes-an-enterprise-network/)** VLANs, static and DHCP addressing, and RFC 4594 QoS via DSCP in OVN, meeting enterprise networks on their own terms.
+4. **[A flat network, GCP-style, on early Kubernetes.](/posts/a-flat-network-gcp-style-on-early-kubernetes/)** The `/32`-plus-routes model, the address operator and CRD pool, live migration of addresses, and why the overlay was a global resource.
+5. **[Running VMs inside pods in 2016, before Kata existed.](/posts/running-vms-inside-pods-in-2016-before-kata-existed/)** The VM-in-pod runtime: KVM inside a pod, how it scheduled and migrated, and how we bridged the guest network out. Plus where secure runtimes like gVisor fit later.
+6. **[From 12 to 60 Gbps with DPDK, when we tried to become a 5G-edge box.](/posts/from-12-to-60-gbps-with-dpdk-when-we-tried-to-become-a-5g-edge-box/)** The pivot from private cloud to edge, and taking the data path out of the kernel: DPDK on OVS, hugepages, poll-mode drivers, and userspace-bound NICs.
+7. **[The OVSDB ORM I wasn't allowed to open-source.](/posts/the-ovsdb-orm-i-wasnt-allowed-to-open-source/)** What it did, why it mattered, and a bit of a eulogy.
 
 The network is the through-line of the whole series, so that's where I'm headed first. If that reads like a lot, it's because it was a lot. It ran for years and it worked. The next post starts where the whole network layer started: a repo that was seven days old, and the decision to build a private cloud's networking on top of it.
