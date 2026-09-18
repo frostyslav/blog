@@ -36,6 +36,22 @@ const config: ResolvedAstroPaperConfig = {
   },
   socials: userConfig.socials ?? [],
   shareLinks: userConfig.shareLinks ?? [],
+  giscus:
+    userConfig.giscus && userConfig.giscus.enabled
+      ? {
+          enabled: true,
+          repo: userConfig.giscus.repo,
+          repoId: userConfig.giscus.repoId,
+          category: userConfig.giscus.category,
+          categoryId: userConfig.giscus.categoryId,
+          mapping: userConfig.giscus.mapping ?? "pathname",
+          reactionsEnabled: userConfig.giscus.reactionsEnabled ?? true,
+          emitMetadata: userConfig.giscus.emitMetadata ?? false,
+          inputPosition: userConfig.giscus.inputPosition ?? "bottom",
+          loading: userConfig.giscus.loading ?? "lazy",
+          lang: userConfig.giscus.lang ?? userConfig.site.lang ?? "en",
+        }
+      : null,
 };
 
 export default config;

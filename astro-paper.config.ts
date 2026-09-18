@@ -40,4 +40,13 @@ export default defineAstroPaperConfig({
     { name: "pinterest", url: "https://pinterest.com/pin/create/button/?url=" },
     { name: "mail",     url: "mailto:?subject=See%20this%20post&body=" },
   ],
+  // To enable comments, visit https://giscus.app, enter your repo details,
+  // and copy the repo, repoId, category, and categoryId values below.
+  giscus: {
+    enabled: true,
+    repo: "frostyslav/blog",
+    repoId: "R_kgDOUE_EAQ",      // paste the value from giscus.app
+    category: "Comments",    // e.g. "Announcements"
+    categoryId: "DIC_kwDOUE_EAc4DF3ja",  // paste the value from giscus.app
+  },
 });
