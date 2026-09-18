@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 420" font-family="ui-monospace, 'SFMono-Regular', 'Google Sans Code', monospace" role="img" aria-labelledby="title desc">
+  <title id="title">The request-processing pipeline</title>
+  <desc id="desc">An incoming request (email or attached document) has its text extracted if needed, then the signature is detected and stripped. The cleaned text then fans out through a shared branch point to four enrichment steps that run against managed AI services: categorize, summarize, sentiment, and translate.</desc>
+
+  <style>
+    :root { color-scheme: light dark; }
+    .bg       { fill: #fffaf6; }
+    .box      { fill: none; stroke: #54515b; }
+    .flow     { stroke: #54515b; fill: none; }
+    .label    { fill: #060503; }
+    .muted    { fill: #54515b; }
+    .hub      { fill: #aa0215; }
+    .hub-text { fill: #ffcf75; }
+    @media (prefers-color-scheme: dark) {
+      .bg       { fill: #2f2f2f; }
+      .box      { stroke: #ddbfa7; }
+      .flow     { stroke: #ddbfa7; }
+      .label    { fill: #ebe5e1; }
+      .muted    { fill: #ddbfa7; }
+      .hub      { fill: #ee781e; }
+      .hub-text { fill: #1a1a1a; }
+    }
+  </style>
+
+  <rect class="bg" x="0" y="0" width="780" height="420" rx="10"/>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#54515b"/>
+    </marker>
+  </defs>
+
+  <!-- preprocessing spine: request -> extract -> signature -->
+  <g class="flow" stroke-width="1.8" stroke-linecap="round" marker-end="url(#arrow)">
+    <line x1="150" y1="70" x2="196" y2="70"/>
+    <line x1="316" y1="70" x2="362" y2="70"/>
+  </g>
+
+  <!-- signature hub -> shared branch point, then a vertical bus feeding each box -->
+  <g class="flow" fill="none" stroke-width="1.8" stroke-linecap="round">
+    <!-- hub drops down and runs right to the bus -->
+    <path d="M426 94 L426 120 L556 120"/>
+    <!-- vertical bus spanning all four rows -->
+    <line x1="556" y1="120" x2="556" y2="380"/>
+    <!-- horizontal stubs into each box -->
+    <line x1="556" y1="120" x2="596" y2="120" marker-end="url(#arrow)"/>
+    <line x1="556" y1="207" x2="596" y2="207" marker-end="url(#arrow)"/>
+    <line x1="556" y1="293" x2="596" y2="293" marker-end="url(#arrow)"/>
+    <line x1="556" y1="380" x2="596" y2="380" marker-end="url(#arrow)"/>
+  </g>
+
+  <!-- preprocessing spine boxes -->
+  <g font-size="12.5" text-anchor="middle">
+    <rect class="box" x="40" y="50" width="110" height="40" rx="8" stroke-width="1.8"/>
+    <text class="label" x="95" y="69">request</text>
+    <text class="muted" x="95" y="83" font-size="10.5">email / doc</text>
+
+    <rect class="box" x="196" y="50" width="120" height="40" rx="8" stroke-width="1.8"/>
+    <text class="label" x="256" y="68">extract text</text>
+    <text class="muted" x="256" y="82" font-size="10.5">if document</text>
+
+    <rect class="hub" x="362" y="48" width="128" height="46" rx="9"/>
+    <text class="hub-text" x="426" y="68" font-weight="700">signature</text>
+    <text class="hub-text" x="426" y="83" font-size="10.5">detect + strip</text>
+  </g>
+
+  <!-- enrichment fan-out (right column) -->
+  <g font-size="12.5" text-anchor="middle">
+    <rect class="box" x="596" y="100" width="140" height="40" rx="8" stroke-width="1.8"/>
+    <text class="label" x="666" y="125">categorize</text>
+
+    <rect class="box" x="596" y="187" width="140" height="40" rx="8" stroke-width="1.8"/>
+    <text class="label" x="666" y="212">summarize</text>
+
+    <rect class="box" x="596" y="273" width="140" height="40" rx="8" stroke-width="1.8"/>
+    <text class="label" x="666" y="298">sentiment</text>
+
+    <rect class="box" x="596" y="360" width="140" height="40" rx="8" stroke-width="1.8"/>
+    <text class="label" x="666" y="385">translate</text>
+  </g>
+
+  <!-- caption: lower-left empty quadrant, clear of the Textract box and the bus -->
+  <g class="muted" font-size="13" text-anchor="start">
+    <text x="40" y="300">strip the signature first,</text>
+    <text x="40" y="320">or the language detector lies.</text>
+  </g>
+</svg>
