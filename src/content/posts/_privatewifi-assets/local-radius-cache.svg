@@ -1,0 +1,124 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1090 600" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" role="img" aria-label="The workaround: a user connects through the central API and a local RADIUS backed by Redis on every VPN server, drained back to MongoDB by a cron job, redrawn from memory">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#6b7280"/>
+    </marker>
+    <style>
+      .box { fill: #ffffff; stroke: #9ca3af; stroke-width: 1.5; }
+      .central { fill: #f3f4f6; stroke: #9ca3af; }
+      .local { fill: #fde8cf; stroke: #d98a2b; }
+      .db { fill: #eef2ff; stroke: #818cf8; }
+      .lbl { fill: #111827; font-size: 14px; }
+      .lbl-sm { fill: #374151; font-size: 12px; }
+      .grouplbl { fill: #6b7280; font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+      .group { fill: none; stroke: #cbd5e1; stroke-width: 1.5; stroke-dasharray: 5 4; }
+      .title { fill: #111827; font-size: 16px; font-weight: 700; }
+      .flow { stroke: #6b7280; stroke-width: 1.6; fill: none; }
+      .flowlbl { fill: #6b7280; font-size: 11px; }
+      @media (prefers-color-scheme: dark) {
+        .box { fill: #1f2430; stroke: #4b5563; }
+        .central { fill: #262b38; stroke: #4b5563; }
+        .local { fill: #3a2e1c; stroke: #d98a2b; }
+        .db { fill: #23283a; stroke: #6366f1; }
+        .lbl { fill: #e5e7eb; }
+        .lbl-sm { fill: #cbd5e1; }
+        .grouplbl { fill: #94a3b8; }
+        .group { stroke: #3f4657; }
+        .title { fill: #f3f4f6; }
+        .flow { stroke: #94a3b8; }
+        .flowlbl { fill: #94a3b8; }
+      }
+    </style>
+  </defs>
+
+  <text x="20" y="30" class="title">Local RADIUS cache per VPN server (redrawn from memory)</text>
+
+  <!-- User (far left, initiates both calls) -->
+  <rect x="20" y="279" width="120" height="60" class="box" rx="8"/>
+  <text x="80" y="305" class="lbl" text-anchor="middle" font-weight="700">User</text>
+  <text x="80" y="322" class="lbl-sm" text-anchor="middle">VPN client</text>
+
+  <!-- Central control plane -->
+  <text x="220" y="72" class="grouplbl">Central (US / Canada)</text>
+  <rect x="210" y="82" width="300" height="200" class="group" rx="12"/>
+
+  <rect x="240" y="100" width="150" height="52" class="central box" rx="8"/>
+  <text x="315" y="124" class="lbl" text-anchor="middle" font-weight="700">API server</text>
+  <text x="315" y="141" class="lbl-sm" text-anchor="middle">verifies user, mints creds</text>
+
+  <ellipse cx="315" cy="228" rx="55" ry="38" class="db box"/>
+  <text x="315" y="226" class="lbl" text-anchor="middle" font-weight="700">MongoDB</text>
+  <text x="315" y="243" class="lbl-sm" text-anchor="middle">source of truth</text>
+
+  <path class="flow" d="M315 152 L315 190" marker-end="url(#arrow)"/>
+  <text x="325" y="175" class="flowlbl">verify user</text>
+
+  <!-- VPN server instance -->
+  <text x="650" y="72" class="grouplbl">Every VPN server instance</text>
+  <rect x="620" y="82" width="440" height="458" class="group" rx="12"/>
+
+  <!-- spine (x centre 860): Small API -> Redis -> RADIUS -> OpenVPN, all vertically aligned -->
+  <rect x="785" y="100" width="150" height="66" class="local box" rx="8"/>
+  <text x="860" y="126" class="lbl" text-anchor="middle" font-weight="700">Small API</text>
+  <text x="860" y="143" class="lbl-sm" text-anchor="middle">writes temporary</text>
+  <text x="860" y="158" class="lbl-sm" text-anchor="middle">RADIUS creds</text>
+
+  <ellipse cx="860" cy="250" rx="62" ry="42" class="db box"/>
+  <text x="860" y="248" class="lbl" text-anchor="middle" font-weight="700">Redis</text>
+  <text x="860" y="265" class="lbl-sm" text-anchor="middle">creds + usage</text>
+
+  <rect x="785" y="330" width="150" height="60" class="local box" rx="8"/>
+  <text x="860" y="356" class="lbl" text-anchor="middle" font-weight="700">RADIUS</text>
+  <text x="860" y="373" class="lbl-sm" text-anchor="middle">local, standalone</text>
+
+  <rect x="785" y="450" width="150" height="60" class="box" rx="8"/>
+  <text x="860" y="476" class="lbl" text-anchor="middle" font-weight="700">OpenVPN</text>
+  <text x="860" y="493" class="lbl-sm" text-anchor="middle">single-threaded</text>
+
+  <!-- cron: to the left of RADIUS, same row -->
+  <rect x="640" y="326" width="130" height="68" class="local box" rx="8"/>
+  <text x="705" y="352" class="lbl" text-anchor="middle" font-weight="700">cron</text>
+  <text x="705" y="369" class="lbl-sm" text-anchor="middle">every minute,</text>
+  <text x="705" y="384" class="lbl-sm" text-anchor="middle">drains usage</text>
+
+  <!-- User -> API server: leaves User centre, turns up at x=180 into API server's left edge -->
+  <path class="flow" d="M140 309 L180 309 L180 126 L240 126" marker-end="url(#arrow)"/>
+  <text x="172" y="230" class="flowlbl" text-anchor="end">1. log in</text>
+
+  <!-- User -> OpenVPN: leaves User centre, turns down at x=180 then across into OpenVPN's left edge -->
+  <path class="flow" d="M140 309 L180 309 L180 480 L785 480" marker-end="url(#arrow)"/>
+  <text x="172" y="400" class="flowlbl" text-anchor="end">2. connect to VPN</text>
+
+  <!-- API -> Small API: single straight horizontal line into Small API left edge -->
+  <path class="flow" d="M390 133 L785 133" marker-end="url(#arrow)"/>
+  <text x="587" y="124" class="flowlbl" text-anchor="middle">push temporary RADIUS creds on login</text>
+
+  <!-- Small API -> Redis (straight vertical) -->
+  <path class="flow" d="M860 166 L860 206" marker-end="url(#arrow)"/>
+
+  <!-- RADIUS -> Redis: RADIUS is the only actor, reads creds and writes usage -->
+  <path class="flow" d="M860 330 L860 294" marker-end="url(#arrow)"/>
+  <text x="870" y="315" class="flowlbl">read creds, write usage</text>
+
+  <!-- OpenVPN <-> RADIUS (straight vertical, local auth) -->
+  <path class="flow" d="M860 450 L860 390" marker-end="url(#arrow)"/>
+  <text x="870" y="425" class="flowlbl">auth in &lt;1 ms, local</text>
+
+  <!-- Redis -> cron: from Redis left-centre, straight left then down into cron top -->
+  <path class="flow" d="M798 250 L705 250 L705 326" marker-end="url(#arrow)"/>
+  <text x="715" y="300" class="flowlbl">drain usage</text>
+
+  <!-- cron -> MongoDB: single elbow, left from cron then up into MongoDB's bottom edge -->
+  <path class="flow" d="M640 360 L315 360 L315 268" marker-end="url(#arrow)"/>
+  <text x="480" y="352" class="flowlbl" text-anchor="middle">async write-back to MongoDB</text>
+
+  <!-- legend -->
+  <rect x="30" y="558" width="14" height="14" class="central box" rx="3"/>
+  <text x="50" y="569" class="lbl-sm">far away</text>
+  <rect x="130" y="558" width="14" height="14" class="local box" rx="3"/>
+  <text x="150" y="569" class="lbl-sm">workaround components</text>
+  <rect x="330" y="558" width="14" height="14" class="db box" rx="3"/>
+  <text x="350" y="569" class="lbl-sm">datastore</text>
+  <rect x="450" y="558" width="14" height="14" class="box" rx="3"/>
+  <text x="470" y="569" class="lbl-sm">pre-existing service</text>
+</svg>
