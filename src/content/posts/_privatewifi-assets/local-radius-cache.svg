@@ -8,6 +8,7 @@
       .central { fill: #f3f4f6; stroke: #9ca3af; }
       .local { fill: #fde8cf; stroke: #d98a2b; }
       .db { fill: #eef2ff; stroke: #818cf8; }
+      .svc { fill: #ecfdf5; stroke: #10b981; }
       .lbl { fill: #111827; font-size: 14px; }
       .lbl-sm { fill: #374151; font-size: 12px; }
       .grouplbl { fill: #6b7280; font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
@@ -20,6 +21,7 @@
         .central { fill: #262b38; stroke: #4b5563; }
         .local { fill: #3a2e1c; stroke: #d98a2b; }
         .db { fill: #23283a; stroke: #6366f1; }
+        .svc { fill: #12271f; stroke: #34d399; }
         .lbl { fill: #e5e7eb; }
         .lbl-sm { fill: #cbd5e1; }
         .grouplbl { fill: #94a3b8; }
@@ -33,7 +35,7 @@
 
   <text x="20" y="30" class="title">Local RADIUS cache per VPN server (redrawn from memory)</text>
 
-  <!-- User (far left, initiates both calls) -->
+  <!-- User (far left, initiates both calls; neutral, not a legend category) -->
   <rect x="20" y="279" width="120" height="60" class="box" rx="8"/>
   <text x="80" y="305" class="lbl" text-anchor="middle" font-weight="700">User</text>
   <text x="80" y="322" class="lbl-sm" text-anchor="middle">VPN client</text>
@@ -71,7 +73,7 @@
   <text x="860" y="356" class="lbl" text-anchor="middle" font-weight="700">RADIUS</text>
   <text x="860" y="373" class="lbl-sm" text-anchor="middle">local, standalone</text>
 
-  <rect x="785" y="450" width="150" height="60" class="box" rx="8"/>
+  <rect x="785" y="450" width="150" height="60" class="svc box" rx="8"/>
   <text x="860" y="476" class="lbl" text-anchor="middle" font-weight="700">OpenVPN</text>
   <text x="860" y="493" class="lbl-sm" text-anchor="middle">single-threaded</text>
 
@@ -119,6 +121,6 @@
   <text x="150" y="569" class="lbl-sm">workaround components</text>
   <rect x="330" y="558" width="14" height="14" class="db box" rx="3"/>
   <text x="350" y="569" class="lbl-sm">datastore</text>
-  <rect x="450" y="558" width="14" height="14" class="box" rx="3"/>
+  <rect x="450" y="558" width="14" height="14" class="svc box" rx="3"/>
   <text x="470" y="569" class="lbl-sm">pre-existing service</text>
 </svg>
