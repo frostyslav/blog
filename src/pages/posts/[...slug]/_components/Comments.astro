@@ -4,25 +4,23 @@ import config from "@/config";
 const { giscus } = config;
 ---
 
-{
-  giscus && (
-    <section
-      id="comments"
-      class="mt-4"
-      aria-label="Comments"
-      data-giscus-repo={giscus.repo}
-      data-giscus-repo-id={giscus.repoId}
-      data-giscus-category={giscus.category}
-      data-giscus-category-id={giscus.categoryId}
-      data-giscus-mapping={giscus.mapping}
-      data-giscus-reactions-enabled={giscus.reactionsEnabled ? "1" : "0"}
-      data-giscus-emit-metadata={giscus.emitMetadata ? "1" : "0"}
-      data-giscus-input-position={giscus.inputPosition}
-      data-giscus-loading={giscus.loading}
-      data-giscus-lang={giscus.lang}
-    />
-  )
-}
+{giscus && (
+  <section
+    id="comments"
+    class="mt-4"
+    aria-label="Comments"
+    data-giscus-repo={giscus.repo}
+    data-giscus-repo-id={giscus.repoId}
+    data-giscus-category={giscus.category}
+    data-giscus-category-id={giscus.categoryId}
+    data-giscus-mapping={giscus.mapping}
+    data-giscus-reactions-enabled={giscus.reactionsEnabled ? "1" : "0"}
+    data-giscus-emit-metadata={giscus.emitMetadata ? "1" : "0"}
+    data-giscus-input-position={giscus.inputPosition}
+    data-giscus-loading={giscus.loading}
+    data-giscus-lang={giscus.lang}
+  />
+)}
 
 <script>
   const GISCUS_ORIGIN = "https://giscus.app";

@@ -127,18 +127,16 @@ const ogImage = ogImageUrl
 
     <div class="my-2 flex items-center gap-2">
       <Datetime {pubDatetime} {modDatetime} {timezone} size="lg" />
-      {
-        minutesRead && (
-          <>
-            <span aria-hidden="true" class="text-muted-foreground">
-              |
-            </span>
-            <span class="text-muted-foreground text-sm sm:text-base">
-              {tplStr(t.post.readingTime, { minutes: minutesRead })}
-            </span>
-          </>
-        )
-      }
+      {minutesRead && (
+        <>
+          <span aria-hidden="true" class="text-muted-foreground">
+            |
+          </span>
+          <span class="text-muted-foreground text-sm sm:text-base">
+            {tplStr(t.post.readingTime, { minutes: minutesRead })}
+          </span>
+        </>
+      )}
       <span
         aria-hidden="true"
         class:list={[
@@ -169,7 +167,9 @@ const ogImage = ogImageUrl
     <BackToTopButton />
 
     <ul class="mt-4 mb-8 flex flex-wrap gap-4 sm:my-8">
-      {tags.map(tag => <Tag tag={slugifyStr(tag)} tagName={tag} size="sm" />)}
+      {tags.map(tag => (
+        <Tag tag={slugifyStr(tag)} tagName={tag} size="sm" />
+      ))}
     </ul>
 
     <ShareLinks />
@@ -178,14 +178,12 @@ const ogImage = ogImageUrl
 
     <AdjacentPostNav {prevPost} {nextPost} />
 
-    {
-      config.giscus && (
-        <>
-          <hr class="my-8 border-dashed" />
-          <Comments />
-        </>
-      )
-    }
+    {config.giscus && (
+      <>
+        <hr class="my-8 border-dashed" />
+        <Comments />
+      </>
+    )}
   </main>
   <Footer />
 </PostLayout>
