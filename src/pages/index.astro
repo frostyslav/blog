@@ -13,7 +13,7 @@ import { getSortedPosts } from "@/utils/getSortedPosts";
 import { useTranslations } from "@/i18n";
 import config from "@/config";
 
-const { socials, posts: postsConfig } = config;
+const { site, socials, posts: postsConfig } = config;
 
 const locale = Astro.currentLocale ?? config.site.lang;
 const t = useTranslations(locale);
@@ -23,9 +23,48 @@ const sortedPosts = getSortedPosts(posts);
 const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
 const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
 const homePath = getRelativeLocaleUrl(locale, "");
+
+// External profiles that represent the same person. Google uses `sameAs` to
+// merge these into a single entity, associating the author's name with this
+// site alongside their LinkedIn, GitHub, CV, etc.
+const sameAs = [
+  ...(site.profile ? [site.profile] : []),
+  ...socials.map(s => s.url),
+].filter((url, i, all) => all.indexOf(url) === i);
+
+const person = {
+  "@type": "Person",
+  name: site.author,
+  url: site.url,
+  ...(site.profile && { mainEntityOfPage: site.profile }),
+  ...(sameAs.length > 0 && { sameAs }),
+};
+
+const identityGraph = {
+  "@context": "https://schema.org",
+  "@graph": [
+    person,
+    {
+      "@type": "WebSite",
+      name: site.title,
+      url: site.url,
+      description: site.description,
+      inLanguage: site.lang,
+      author: { "@type": "Person", name: site.author, url: site.url },
+      publisher: { "@type": "Person", name: site.author, url: site.url },
+    },
+  ],
+};
 ---
 
 <Layout>
+  <Fragment slot="head">
+    <script
+      type="application/ld+json"
+      is:inline
+      set:html={JSON.stringify(identityGraph)}
+    />
+  </Fragment>
   <Header />
   <main
     id="main-content"

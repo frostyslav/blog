@@ -16,13 +16,24 @@ const { site } = config;
 const { title, description, ogImage, canonicalURL, pubDatetime, modDatetime } =
   Astro.props;
 
+const pageURL = canonicalURL ?? new URL(Astro.url.pathname, Astro.site).href;
+
 const structuredData = {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
   headline: title ?? site.title,
-  image: ogImage,
+  ...(description && { description }),
+  ...(ogImage && { image: ogImage }),
+  url: pageURL,
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": pageURL,
+  },
   ...(pubDatetime && { datePublished: pubDatetime.toISOString() }),
-  ...(modDatetime && { dateModified: modDatetime.toISOString() }),
+  // Google recommends dateModified; fall back to the publish date.
+  ...((modDatetime || pubDatetime) && {
+    dateModified: (modDatetime ?? pubDatetime)!.toISOString(),
+  }),
   author: [
     {
       "@type": "Person",
@@ -30,6 +41,11 @@ const structuredData = {
       ...(site.profile && { url: site.profile }),
     },
   ],
+  publisher: {
+    "@type": "Person",
+    name: site.author,
+    ...(site.profile && { url: site.profile }),
+  },
 };
 ---
 
