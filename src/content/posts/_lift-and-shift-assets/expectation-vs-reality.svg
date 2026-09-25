@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 580" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" role="img" aria-label="Two panels contrasting the planned lift-and-shift with the work it actually required. Left: one server box moved to an AWS VM. Right: the same VM surrounded by log shipping, metrics scraping, on-prem connectivity both directions, and a row of operability work built around it: a self-healing loop, managed backup, and a reprovision-based upgrade path.">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#6b7280"/>
+    </marker>
+    <style>
+      .box  { fill:#ffffff; stroke:#9ca3af; stroke-width:1.5; }
+      .vm   { fill:#dbeafe; stroke:#2563eb; stroke-width:1.7; }
+      .add  { fill:#dcfce7; stroke:#16a34a; stroke-width:1.5; }
+      .warn { fill:#fef9c3; stroke:#ca8a04; stroke-width:1.5; }
+      .onprem { fill:#f3f4f6; stroke:#9ca3af; stroke-width:1.5; }
+      .lbl  { fill:#111827; font-size:13px; }
+      .sub  { fill:#374151; font-size:10px; }
+      .head { fill:#111827; font-size:15px; font-weight:700; }
+      .flow { stroke:#6b7280; stroke-width:1.5; fill:none; }
+      .divider { stroke:#9ca3af; stroke-width:1; stroke-dasharray:4 4; }
+      @media (prefers-color-scheme: dark) {
+        .box  { fill:#1f2430; stroke:#4b5563; }
+        .vm   { fill:#1e2a44; stroke:#3b82f6; }
+        .add  { fill:#16321f; stroke:#22c55e; }
+        .warn { fill:#3a2e1c; stroke:#eab308; }
+        .onprem { fill:#262b38; stroke:#4b5563; }
+        .lbl  { fill:#e5e7eb; }
+        .sub  { fill:#cbd5e1; }
+        .head { fill:#f3f4f6; }
+        .flow { stroke:#94a3b8; }
+        .divider { stroke:#4b5563; }
+      }
+    </style>
+  </defs>
+
+  <!-- ============ LEFT: THE TICKET ============ -->
+  <text class="head" x="20" y="30">The ticket</text>
+
+  <rect class="box" x="30" y="150" width="130" height="60" rx="8"/>
+  <text class="lbl" x="95" y="176" text-anchor="middle">Third-party</text>
+  <text class="lbl" x="95" y="192" text-anchor="middle">server</text>
+
+  <path class="flow" d="M160,180 L224,180" marker-end="url(#a)"/>
+  <text class="sub" x="192" y="170" text-anchor="middle">move it</text>
+
+  <rect class="vm" x="230" y="148" width="160" height="64" rx="8"/>
+  <text class="lbl" x="310" y="174" text-anchor="middle">AWS VM</text>
+  <text class="sub" x="310" y="192" text-anchor="middle">same software, done</text>
+
+  <text class="sub" x="30" y="260">Scoped in days.</text>
+
+  <!-- vertical divider -->
+  <line class="divider" x1="450" y1="20" x2="450" y2="560"/>
+
+  <!-- ============ RIGHT: REALITY ============ -->
+  <text class="head" x="490" y="30">What shipping it actually needed</text>
+
+  <!-- two observability agents across the top -->
+  <rect class="add" x="560" y="66" width="190" height="66" rx="8"/>
+  <text class="lbl" x="655" y="90" text-anchor="middle">Log-shipping agent</text>
+  <text class="sub" x="655" y="107" text-anchor="middle">tails scattered, untimestamped</text>
+  <text class="sub" x="655" y="120" text-anchor="middle">logs to central log groups</text>
+
+  <rect class="add" x="790" y="66" width="200" height="66" rx="8"/>
+  <text class="lbl" x="890" y="90" text-anchor="middle">Metrics agent</text>
+  <text class="sub" x="890" y="107" text-anchor="middle">scrapes the curl/XML health</text>
+  <text class="sub" x="890" y="120" text-anchor="middle">endpoint into real metrics</text>
+
+  <!-- the VM at the centre, centred on x=790 so both trunks are dead-centre -->
+  <rect class="vm" x="700" y="230" width="180" height="74" rx="8"/>
+  <text class="lbl" x="790" y="258" text-anchor="middle">AWS VM (a pet)</text>
+  <text class="sub" x="790" y="276" text-anchor="middle">black-box app</text>
+  <text class="sub" x="790" y="289" text-anchor="middle">we can't modify</text>
+
+  <!-- on-prem to the right of the VM, same row -->
+  <rect class="onprem" x="920" y="232" width="160" height="70" rx="8"/>
+  <text class="lbl" x="1000" y="260" text-anchor="middle">On-prem ERP</text>
+  <text class="sub" x="1000" y="278" text-anchor="middle">hardcoded high ports</text>
+
+  <!-- bottom row: three pieces of operability work -->
+  <rect class="add" x="470" y="430" width="200" height="100" rx="8"/>
+  <text class="lbl" x="570" y="454" text-anchor="middle">Self-healing loop</text>
+  <text class="sub" x="570" y="472" text-anchor="middle">poll endpoints, publish</text>
+  <text class="sub" x="570" y="485" text-anchor="middle">up/down metric, alarm on</text>
+  <text class="sub" x="570" y="498" text-anchor="middle">down, auto-restart services,</text>
+  <text class="sub" x="570" y="511" text-anchor="middle">notify a human</text>
+
+  <rect class="add" x="690" y="430" width="200" height="100" rx="8"/>
+  <text class="lbl" x="790" y="454" text-anchor="middle">Managed backup</text>
+  <text class="sub" x="790" y="472" text-anchor="middle">daily snapshots of every</text>
+  <text class="sub" x="790" y="485" text-anchor="middle">volume to an encrypted</text>
+  <text class="sub" x="790" y="498" text-anchor="middle">vault, fixed retention,</text>
+  <text class="sub" x="790" y="511" text-anchor="middle">tag-based selection</text>
+
+  <rect class="add" x="910" y="430" width="220" height="100" rx="8"/>
+  <text class="lbl" x="1020" y="454" text-anchor="middle">Upgrade = reprovision</text>
+  <text class="sub" x="1020" y="472" text-anchor="middle">no in-place OS upgrade;</text>
+  <text class="sub" x="1020" y="485" text-anchor="middle">prereqs in user-data, data</text>
+  <text class="sub" x="1020" y="498" text-anchor="middle">on detachable volumes,</text>
+  <text class="sub" x="1020" y="511" text-anchor="middle">config re-applied</text>
+
+  <!-- VM up to a distribution bus, then a straight rise into each agent.
+       Trunk shares x=790 with the bottom trunk so both are on one vertical line. -->
+  <path class="flow" d="M790,230 L790,180" />
+  <path class="flow" d="M655,180 L890,180" />
+  <path class="flow" d="M655,180 L655,136" marker-end="url(#a)"/>
+  <path class="flow" d="M890,180 L890,136" marker-end="url(#a)"/>
+
+  <!-- VM <-> on-prem, bidirectional, horizontal -->
+  <path class="flow" d="M880,260 L916,260" marker-end="url(#a)"/>
+  <path class="flow" d="M916,276 L880,276" marker-end="url(#a)"/>
+
+  <!-- VM down to a single distribution bus, then a straight drop into each bottom box.
+       The trunk and the middle drop share x=790, so VM -> Managed backup reads as one straight line. -->
+  <path class="flow" d="M790,304 L790,360" />
+  <path class="flow" d="M570,360 L1020,360" />
+  <path class="flow" d="M570,360 L570,426" marker-end="url(#a)"/>
+  <path class="flow" d="M790,360 L790,426" marker-end="url(#a)"/>
+  <path class="flow" d="M1020,360 L1020,426" marker-end="url(#a)"/>
+
+  <text class="sub" x="470" y="562">Six months. Almost all of it scaffolding around a box we couldn't change.</text>
+</svg>
