@@ -27,9 +27,13 @@ const homePath = getRelativeLocaleUrl(locale, "");
 // External profiles that represent the same person. Google uses `sameAs` to
 // merge these into a single entity, associating the author's name with this
 // site alongside their LinkedIn, GitHub, CV, etc.
+// `extraSameAs` holds profiles included in the JSON-LD only (not rendered as
+// visible social links), e.g. the apex homepage.
+const extraSameAs = ["https://rostyslav.eu/"];
 const sameAs = [
   ...(site.profile ? [site.profile] : []),
   ...socials.map(s => s.url),
+  ...extraSameAs,
 ].filter((url, i, all) => all.indexOf(url) === i);
 
 const person = {
