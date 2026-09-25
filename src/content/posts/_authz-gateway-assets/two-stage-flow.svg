@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 430" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" role="img" aria-label="The shipped two-stage authorization flow: at the external ALB the user authenticates over OIDC against the identity provider (stage 1), then the internal ALB obtains a SAML assertion from the same identity provider and hands it to the passive legacy app (stage 2)">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#6b7280"/>
+    </marker>
+    <style>
+      .box { fill:#ffffff; stroke:#9ca3af; stroke-width:1.5; }
+      .lb  { fill:#dbeafe; stroke:#2563eb; stroke-width:1.6; }
+      .idp { fill:#dcfce7; stroke:#16a34a; stroke-width:1.6; }
+      .app { fill:#fee2e2; stroke:#dc2626; stroke-width:1.6; }
+      .lbl { fill:#111827; font-size:14px; }
+      .sub { fill:#374151; font-size:11px; }
+      .flow{ stroke:#6b7280; stroke-width:1.6; fill:none; }
+      .tag { fill:#374151; font-size:11px; font-weight:700; }
+      .zone { fill:none; stroke:#9ca3af; stroke-width:1; stroke-dasharray:5 4; }
+      .zlbl { fill:#374151; font-size:11px; }
+      @media (prefers-color-scheme: dark) {
+        .box { fill:#1f2430; stroke:#4b5563; }
+        .lb  { fill:#1e2a44; stroke:#3b82f6; }
+        .idp { fill:#16321f; stroke:#22c55e; }
+        .app { fill:#3a1f22; stroke:#f87171; }
+        .lbl { fill:#e5e7eb; }
+        .sub { fill:#cbd5e1; }
+        .flow{ stroke:#94a3b8; }
+        .tag { fill:#cbd5e1; }
+        .zone { stroke:#4b5563; }
+        .zlbl { fill:#cbd5e1; }
+      }
+    </style>
+  </defs>
+
+  <!-- zones -->
+  <rect class="zone" x="16" y="150" width="700" height="230" rx="6"/>
+  <text class="zlbl" x="28" y="170">Cloud edge</text>
+  <rect class="zone" x="736" y="150" width="208" height="230" rx="6"/>
+  <text class="zlbl" x="748" y="170">On-prem</text>
+
+  <!-- IdP across the top, centered between the two ALBs -->
+  <rect class="idp" x="228" y="30" width="300" height="60" rx="8"/>
+  <text class="lbl" x="378" y="55" text-anchor="middle">Identity provider</text>
+  <text class="sub" x="378" y="74" text-anchor="middle">OIDC for stage 1 · SAML for stage 2 · not in the data path</text>
+
+  <!-- main row -->
+  <rect class="box" x="30" y="238" width="96" height="54" rx="8"/>
+  <text class="lbl" x="78" y="269" text-anchor="middle">User</text>
+
+  <rect class="lb" x="176" y="230" width="170" height="70" rx="8"/>
+  <text class="lbl" x="261" y="256" text-anchor="middle">External ALB</text>
+  <text class="sub" x="261" y="274" text-anchor="middle">stage 1: no edge cookie?</text>
+  <text class="sub" x="261" y="288" text-anchor="middle">start OIDC to the IdP</text>
+
+  <rect class="lb" x="396" y="230" width="196" height="70" rx="8"/>
+  <text class="lbl" x="494" y="256" text-anchor="middle">Internal ALB</text>
+  <text class="sub" x="494" y="274" text-anchor="middle">stage 2: no SAML assertion?</text>
+  <text class="sub" x="494" y="288" text-anchor="middle">redirect browser to IdP for one</text>
+
+  <rect class="app" x="742" y="230" width="192" height="70" rx="8"/>
+  <text class="lbl" x="838" y="256" text-anchor="middle">Legacy application</text>
+  <text class="sub" x="838" y="274" text-anchor="middle">unchanged and passive</text>
+  <text class="sub" x="838" y="288" text-anchor="middle">trusts a valid SAML assertion</text>
+
+  <!-- horizontal data path -->
+  <path class="flow" d="M126,265 L172,265" marker-end="url(#arrow)"/>
+  <path class="flow" d="M346,265 L392,265" marker-end="url(#arrow)"/>
+  <path class="flow" d="M592,265 L738,265" marker-end="url(#arrow)"/>
+  <text class="tag" x="665" y="256" text-anchor="middle">assertion in hand</text>
+
+  <!-- stage 1: external ALB up to IdP (OIDC), dead-vertical pair -->
+  <path class="flow" d="M251,230 L251,94" marker-end="url(#arrow)"/>
+  <path class="flow" d="M271,94 L271,230" marker-end="url(#arrow)"/>
+  <text class="tag" x="292" y="204">stage 1</text>
+  <text class="sub" x="292" y="219">OIDC</text>
+
+  <!-- stage 2: internal ALB up to IdP (SAML), dead-vertical pair -->
+  <path class="flow" d="M484,230 L484,94" marker-end="url(#arrow)"/>
+  <path class="flow" d="M504,94 L504,230" marker-end="url(#arrow)"/>
+  <text class="tag" x="525" y="204">stage 2</text>
+  <text class="sub" x="525" y="219">SAML</text>
+</svg>

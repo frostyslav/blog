@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 560" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" role="img" aria-label="Before and after: an over-connected chain of gateways where an intermittent 502 cannot be localized, versus a two-stage authorization path with far fewer hops">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#6b7280"/>
+    </marker>
+    <marker id="ared" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#dc2626"/>
+    </marker>
+    <style>
+      .box  { fill:#ffffff; stroke:#9ca3af; stroke-width:1.5; }
+      .idpbad { fill:#fde8cf; stroke:#d98a2b; stroke-width:1.8; }
+      .idpok  { fill:#dcfce7; stroke:#16a34a; stroke-width:1.8; }
+      .app  { fill:#fee2e2; stroke:#dc2626; stroke-width:1.6; }
+      .lb   { fill:#dbeafe; stroke:#2563eb; stroke-width:1.6; }
+      .lbl  { fill:#111827; font-size:14px; }
+      .sub  { fill:#374151; font-size:11px; }
+      .head { fill:#111827; font-size:16px; font-weight:700; }
+      .flow { stroke:#6b7280; stroke-width:1.6; fill:none; }
+      .badge{ fill:#fee2e2; stroke:#dc2626; stroke-width:1.6; }
+      .badgetxt { fill:#b91c1c; font-size:13px; font-weight:700; }
+      .flowred { stroke:#dc2626; stroke-width:1.6; fill:none; }
+      .divider { stroke:#9ca3af; stroke-width:1; stroke-dasharray:4 4; }
+      @media (prefers-color-scheme: dark) {
+        .box  { fill:#1f2430; stroke:#4b5563; }
+        .idpbad { fill:#3a2e1c; stroke:#d98a2b; }
+        .idpok  { fill:#16321f; stroke:#22c55e; }
+        .app  { fill:#3a1f22; stroke:#f87171; }
+        .lb   { fill:#1e2a44; stroke:#3b82f6; }
+        .lbl  { fill:#e5e7eb; }
+        .sub  { fill:#cbd5e1; }
+        .head { fill:#f3f4f6; }
+        .flow { stroke:#94a3b8; }
+        .badge{ fill:#3a1f22; stroke:#f87171; }
+        .badgetxt { fill:#fca5a5; }
+        .flowred { stroke:#f87171; }
+        .divider { stroke:#4b5563; }
+      }
+    </style>
+  </defs>
+
+  <!-- ============ BEFORE ============ -->
+  <text class="head" x="20" y="30">Before: a tangle no one could debug</text>
+
+  <rect class="box" x="20" y="64" width="92" height="48" rx="8"/>
+  <text class="lbl" x="66" y="93" text-anchor="middle">User</text>
+
+  <rect class="idpbad" x="150" y="58" width="142" height="60" rx="8"/>
+  <text class="lbl" x="221" y="82" text-anchor="middle">Identity provider</text>
+  <text class="sub" x="221" y="99" text-anchor="middle">also acting as</text>
+  <text class="sub" x="221" y="112" text-anchor="middle">a traffic gateway</text>
+
+  <rect class="box" x="330" y="64" width="92" height="48" rx="8"/>
+  <text class="lbl" x="376" y="86" text-anchor="middle">Gateway</text>
+  <text class="sub" x="376" y="102" text-anchor="middle">/ proxy</text>
+
+  <rect class="box" x="450" y="64" width="92" height="48" rx="8"/>
+  <text class="lbl" x="496" y="86" text-anchor="middle">Gateway</text>
+  <text class="sub" x="496" y="102" text-anchor="middle">/ proxy</text>
+
+  <rect class="box" x="570" y="64" width="92" height="48" rx="8"/>
+  <text class="lbl" x="616" y="86" text-anchor="middle">Firewall</text>
+  <text class="sub" x="616" y="102" text-anchor="middle">/ NAT</text>
+
+  <rect class="box" x="690" y="64" width="104" height="48" rx="8"/>
+  <text class="lbl" x="742" y="86" text-anchor="middle">On-prem</text>
+  <text class="sub" x="742" y="102" text-anchor="middle">load balancer</text>
+
+  <rect class="app" x="822" y="64" width="138" height="48" rx="8"/>
+  <text class="lbl" x="891" y="86" text-anchor="middle">Legacy app</text>
+  <text class="sub" x="891" y="102" text-anchor="middle">fine, but unreachable</text>
+
+  <path class="flow" d="M112,88 L146,88" marker-end="url(#a)"/>
+  <path class="flow" d="M292,88 L326,88" marker-end="url(#a)"/>
+  <path class="flow" d="M422,88 L446,88" marker-end="url(#a)"/>
+  <path class="flow" d="M542,88 L566,88" marker-end="url(#a)"/>
+  <path class="flow" d="M662,88 L686,88" marker-end="url(#a)"/>
+  <path class="flow" d="M794,88 L818,88" marker-end="url(#a)"/>
+
+  <rect class="badge" x="356" y="168" width="248" height="36" rx="8"/>
+  <text class="badgetxt" x="480" y="191" text-anchor="middle">502 born somewhere in here</text>
+  <path class="flowred" d="M376,118 Q400,150 452,168" marker-end="url(#ared)"/>
+  <path class="flowred" d="M616,118 Q560,150 508,168" marker-end="url(#ared)"/>
+  <text class="sub" x="480" y="226" text-anchor="middle">intermittent, unlocalizable across the chain</text>
+
+  <line class="divider" x1="20" y1="266" x2="960" y2="266"/>
+
+  <!-- ============ AFTER ============ -->
+  <text class="head" x="20" y="306">After: two stages, few hops, clear owners</text>
+
+  <rect class="box" x="20" y="354" width="92" height="48" rx="8"/>
+  <text class="lbl" x="66" y="383" text-anchor="middle">User</text>
+
+  <rect class="lb" x="150" y="346" width="172" height="64" rx="8"/>
+  <text class="lbl" x="236" y="370" text-anchor="middle">External ALB</text>
+  <text class="sub" x="236" y="387" text-anchor="middle">stage 1: OIDC check</text>
+  <text class="sub" x="236" y="400" text-anchor="middle">"allowed on the path"</text>
+
+  <rect class="idpok" x="150" y="452" width="172" height="58" rx="8"/>
+  <text class="lbl" x="236" y="476" text-anchor="middle">Identity provider</text>
+  <text class="sub" x="236" y="493" text-anchor="middle">only an IdP,</text>
+  <text class="sub" x="236" y="505" text-anchor="middle">not in the data path</text>
+
+  <rect class="lb" x="382" y="346" width="182" height="64" rx="8"/>
+  <text class="lbl" x="473" y="370" text-anchor="middle">Internal ALB</text>
+  <text class="sub" x="473" y="387" text-anchor="middle">stage 2: gets a SAML</text>
+  <text class="sub" x="473" y="400" text-anchor="middle">assertion from the IdP</text>
+
+  <rect class="box" x="614" y="354" width="92" height="48" rx="8"/>
+  <text class="lbl" x="660" y="376" text-anchor="middle">Firewall</text>
+  <text class="sub" x="660" y="392" text-anchor="middle">/ NAT</text>
+
+  <rect class="app" x="754" y="346" width="206" height="64" rx="8"/>
+  <text class="lbl" x="857" y="370" text-anchor="middle">Legacy app (unchanged)</text>
+  <text class="sub" x="857" y="387" text-anchor="middle">passive: trusts a valid</text>
+  <text class="sub" x="857" y="400" text-anchor="middle">SAML assertion, no login</text>
+
+  <path class="flow" d="M112,378 L146,378" marker-end="url(#a)"/>
+  <path class="flow" d="M322,378 L378,378" marker-end="url(#a)"/>
+  <path class="flow" d="M564,378 L610,378" marker-end="url(#a)"/>
+  <path class="flow" d="M706,378 L750,378" marker-end="url(#a)"/>
+
+  <!-- stage 1: external ALB <-> IdP over OIDC -->
+  <path class="flow" d="M229,410 L229,448" marker-end="url(#a)"/>
+  <path class="flow" d="M243,448 L243,410" marker-end="url(#a)"/>
+
+  <!-- stage 2: internal ALB drives SAML to IdP via the browser -->
+  <path class="flow" d="M420,410 Q360,452 324,474" marker-end="url(#a)"/>
+</svg>
