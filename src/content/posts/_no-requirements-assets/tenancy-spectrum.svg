@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 420" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif" role="img" aria-label="A spectrum of three Kubernetes tenancy models from managed to unmanaged, running from ease of use on the left to control on the right, showing which parts sit with the provider versus the tenant in each model">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#6b7280"/>
+    </marker>
+    <style>
+      .head { fill:#111827; font-size:16px; font-weight:700; }
+      .axis { fill:#374151; font-size:13px; font-weight:600; }
+      .lbl  { fill:#111827; font-size:14px; font-weight:600; }
+      .sub  { fill:#374151; font-size:11px; }
+      .prov { fill:#dbeafe; stroke:#2563eb; stroke-width:1.6; }
+      .ten  { fill:#dcfce7; stroke:#16a34a; stroke-width:1.6; }
+      .card { fill:#ffffff; stroke:#9ca3af; stroke-width:1.5; }
+      .line { stroke:#6b7280; stroke-width:1.6; fill:none; }
+      .seg  { fill:#111827; font-size:10px; }
+      @media (prefers-color-scheme: dark) {
+        .head { fill:#f3f4f6; }
+        .axis { fill:#cbd5e1; }
+        .lbl  { fill:#e5e7eb; }
+        .sub  { fill:#cbd5e1; }
+        .prov { fill:#1e2a44; stroke:#3b82f6; }
+        .ten  { fill:#16321f; stroke:#22c55e; }
+        .card { fill:#1f2430; stroke:#4b5563; }
+        .line { stroke:#94a3b8; }
+        .seg  { fill:#e5e7eb; }
+      }
+    </style>
+  </defs>
+
+  <text class="head" x="20" y="30">One cluster is three products, depending on who shows up</text>
+
+  <!-- axis -->
+  <text class="axis" x="20" y="66">Ease of use</text>
+  <path class="line" d="M150,61 L830,61" marker-end="url(#ar)"/>
+  <text class="axis" x="900" y="66" text-anchor="end">Control</text>
+
+  <!-- legend -->
+  <rect class="prov" x="150" y="384" width="16" height="14" rx="3"/>
+  <text class="sub" x="172" y="396">Provider runs it</text>
+  <rect class="ten" x="300" y="384" width="16" height="14" rx="3"/>
+  <text class="sub" x="322" y="396">Tenant runs it</text>
+
+  <!-- ===== Managed ===== -->
+  <rect class="card" x="40" y="92" width="280" height="264" rx="10"/>
+  <text class="lbl" x="180" y="118" text-anchor="middle">Managed</text>
+  <text class="sub" x="180" y="135" text-anchor="middle">closest to serverless k8s</text>
+
+  <rect class="ten"  x="64" y="150" width="232" height="30" rx="6"/>
+  <text class="seg" x="180" y="169" text-anchor="middle">Apps, data, IAM</text>
+  <rect class="prov" x="64" y="184" width="232" height="30" rx="6"/>
+  <text class="seg" x="180" y="203" text-anchor="middle">Worker nodes</text>
+  <rect class="prov" x="64" y="218" width="232" height="30" rx="6"/>
+  <text class="seg" x="180" y="237" text-anchor="middle">Control plane (API, etcd)</text>
+  <rect class="prov" x="64" y="252" width="232" height="30" rx="6"/>
+  <text class="seg" x="180" y="271" text-anchor="middle">OS, network, hypervisor</text>
+  <rect class="prov" x="64" y="286" width="232" height="30" rx="6"/>
+  <text class="seg" x="180" y="305" text-anchor="middle">Hardware, facilities</text>
+  <text class="sub" x="180" y="338" text-anchor="middle">tenant brings only workloads</text>
+
+  <!-- ===== Tenant ===== -->
+  <rect class="card" x="350" y="92" width="280" height="264" rx="10"/>
+  <text class="lbl" x="490" y="118" text-anchor="middle">Tenant</text>
+  <text class="sub" x="490" y="135" text-anchor="middle">provider keeps the control plane</text>
+
+  <rect class="ten"  x="374" y="150" width="232" height="30" rx="6"/>
+  <text class="seg" x="490" y="169" text-anchor="middle">Apps, data, IAM</text>
+  <rect class="ten"  x="374" y="184" width="232" height="30" rx="6"/>
+  <text class="seg" x="490" y="203" text-anchor="middle">Worker nodes</text>
+  <rect class="prov" x="374" y="218" width="232" height="30" rx="6"/>
+  <text class="seg" x="490" y="237" text-anchor="middle">Control plane (API, etcd)</text>
+  <rect class="prov" x="374" y="252" width="232" height="30" rx="6"/>
+  <text class="seg" x="490" y="271" text-anchor="middle">OS, network, hypervisor</text>
+  <rect class="prov" x="374" y="286" width="232" height="30" rx="6"/>
+  <text class="seg" x="490" y="305" text-anchor="middle">Hardware, facilities</text>
+  <text class="sub" x="490" y="338" text-anchor="middle">tenant owns the worker nodes</text>
+
+  <!-- ===== Unmanaged ===== -->
+  <rect class="card" x="660" y="92" width="280" height="264" rx="10"/>
+  <text class="lbl" x="800" y="118" text-anchor="middle">Unmanaged</text>
+  <text class="sub" x="800" y="135" text-anchor="middle">provider gives VMs and the floor</text>
+
+  <rect class="ten"  x="684" y="150" width="232" height="30" rx="6"/>
+  <text class="seg" x="800" y="169" text-anchor="middle">Apps, data, IAM</text>
+  <rect class="ten"  x="684" y="184" width="232" height="30" rx="6"/>
+  <text class="seg" x="800" y="203" text-anchor="middle">Worker nodes</text>
+  <rect class="ten"  x="684" y="218" width="232" height="30" rx="6"/>
+  <text class="seg" x="800" y="237" text-anchor="middle">Control plane (API, etcd)</text>
+  <rect class="prov" x="684" y="252" width="232" height="30" rx="6"/>
+  <text class="seg" x="800" y="271" text-anchor="middle">OS, network, hypervisor</text>
+  <rect class="prov" x="684" y="286" width="232" height="30" rx="6"/>
+  <text class="seg" x="800" y="305" text-anchor="middle">Hardware, facilities</text>
+  <text class="sub" x="800" y="338" text-anchor="middle">tenant owns Kubernetes itself</text>
+</svg>
