@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="1180" viewBox="0 0 920 1180" font-family="'Google Sans Code', ui-monospace, 'SF Mono', Menlo, monospace">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0b0f0a"/>
+      <stop offset="1" stop-color="#11160f"/>
+    </linearGradient>
+    <style>
+      .layer { rx: 10; ry: 10; }
+      .title { fill:#e8ffe3; font-size:19px; font-weight:700; }
+      .sub   { fill:#bfe8b4; font-size:12.5px; }
+      .tag   { fill:#0b0f0a; font-size:11px; font-weight:700; }
+      .lbl   { fill:#9bd98a; font-size:11px; letter-spacing:1px; }
+      .foot  { fill:#7fae72; font-size:12px; }
+      .white { fill:#f2fff0; }
+    </style>
+  </defs>
+
+  <rect width="920" height="1180" fill="url(#bg)"/>
+
+  <!-- heading -->
+  <text x="40" y="48" class="white" font-size="24" font-weight="700">The NVIDIA stack</text>
+  <text x="40" y="72" class="foot">GPU at the bottom, agents and safety at the top. Each layer makes the one below it harder to leave.</text>
+
+  <!-- direction rail -->
+  <text x="884" y="130" class="lbl" text-anchor="end">▲ harder to leave</text>
+  <text x="884" y="1120" class="lbl" text-anchor="end">▼ closer to the silicon</text>
+
+  <!-- ===== TOP: agents & safety ===== -->
+  <rect x="40" y="110" width="840" height="78" class="layer" fill="#1f6f3a" stroke="#9bd98a" stroke-opacity="0.4"/>
+  <text x="60" y="140" class="title">Agents &amp; safety</text>
+  <text x="60" y="162" class="sub">Skills: composable agent building blocks</text>
+  <text x="60" y="180" class="sub">NeMo Guardrails: programmable safety layer (NemoGuard NIMs)</text>
+
+  <!-- Blueprints -->
+  <rect x="40" y="200" width="840" height="64" class="layer" fill="#216e3f" stroke="#9bd98a" stroke-opacity="0.4"/>
+  <text x="60" y="229" class="title">Blueprints</text>
+  <text x="60" y="251" class="sub">Reference workflows (RAG, drug discovery, agents): NIMs + Helm charts</text>
+
+  <!-- Nemotron / NeMo framework -->
+  <rect x="40" y="276" width="410" height="64" class="layer" fill="#246d44" stroke="#9bd98a" stroke-opacity="0.4"/>
+  <text x="60" y="305" class="title">Nemotron</text>
+  <text x="60" y="327" class="sub">NVIDIA's own open models, shipped as NIMs</text>
+
+  <rect x="470" y="276" width="410" height="64" class="layer" fill="#246d44" stroke="#9bd98a" stroke-opacity="0.4"/>
+  <text x="490" y="305" class="title">NeMo framework</text>
+  <text x="490" y="327" class="sub">Build, train, fine-tune the models</text>
+
+  <!-- NIM -->
+  <rect x="40" y="352" width="840" height="64" class="layer" fill="#277a46" stroke="#9bd98a" stroke-opacity="0.4"/>
+  <text x="60" y="381" class="title">NIM: NVIDIA Inference Microservice</text>
+  <text x="60" y="403" class="sub">model + optimized engine + standard API, in a container (build.nvidia.com)</text>
+
+  <!-- Inference: server + framework -->
+  <rect x="40" y="428" width="410" height="64" class="layer" fill="#2a7d4a" stroke="#9bd98a" stroke-opacity="0.4"/>
+  <text x="60" y="457" class="title">Triton</text>
+  <text x="60" y="479" class="sub">Inference server: TensorRT / vLLM / PyTorch / ONNX</text>
+
+  <rect x="470" y="428" width="410" height="64" class="layer" fill="#2a7d4a" stroke="#9bd98a" stroke-opacity="0.4"/>
+  <text x="490" y="457" class="title">Dynamo</text>
+  <text x="490" y="479" class="sub">Disaggregated serving at rack scale (open source)</text>
+
+  <!-- Inference engines -->
+  <rect x="40" y="504" width="410" height="64" class="layer" fill="#2d8150" stroke="#9bd98a" stroke-opacity="0.4"/>
+  <text x="60" y="533" class="title">TensorRT-LLM</text>
+  <text x="60" y="555" class="sub">Proprietary compiled engine, NVIDIA-only</text>
+
+  <rect x="470" y="504" width="410" height="64" class="layer" fill="#2d8150" stroke="#9bd98a" stroke-opacity="0.4"/>
+  <text x="490" y="533" class="title">vLLM</text>
+  <text x="490" y="555" class="sub">Open engine, portable, still runs on CUDA</text>
+
+  <!-- Systems + cloud -->
+  <rect x="40" y="580" width="840" height="78" class="layer" fill="#2f6f52" stroke="#9bd98a" stroke-opacity="0.4"/>
+  <text x="60" y="610" class="title">Systems &amp; cloud</text>
+  <text x="60" y="632" class="sub">HGX reference baseboard · DGX appliance / SuperPOD</text>
+  <text x="60" y="650" class="sub">DGX Cloud: rent the whole thing back as a subscription</text>
+
+  <!-- CPU -->
+  <rect x="40" y="670" width="840" height="64" class="layer" fill="#356248" stroke="#9bd98a" stroke-opacity="0.4"/>
+  <text x="60" y="699" class="title">Grace CPU</text>
+  <text x="60" y="721" class="sub">Arm Neoverse V2 · NVLink-C2C coherent link to the GPU at 900 GB/s</text>
+
+  <!-- Data-center fabric (Mellanox) -->
+  <rect x="40" y="746" width="840" height="92" class="layer" fill="#394f6b" stroke="#accdf2" stroke-opacity="0.4"/>
+  <text x="60" y="776" class="title white">Data-center fabric</text>
+  <text x="60" y="798" class="sub" fill="#cfe3ff">Quantum InfiniBand · Spectrum-X Ethernet · BlueField DPUs</text>
+  <text x="60" y="816" class="sub" fill="#cfe3ff">Scales a job across racks, thousands of GPUs</text>
+
+  <!-- NVLink / NVSwitch -->
+  <rect x="40" y="850" width="840" height="92" class="layer" fill="#3a3f72" stroke="#c3c0ff" stroke-opacity="0.4"/>
+  <text x="60" y="880" class="title white">NVLink / NVSwitch</text>
+  <text x="60" y="902" class="sub" fill="#d7d4ff">GPU-to-GPU fabric at 1.8 TB/s per Blackwell GPU</text>
+  <text x="60" y="920" class="sub" fill="#d7d4ff">Makes 8 in a box or 72 in a rack behave as one GPU</text>
+
+  <!-- CUDA / CUDA-X -->
+  <rect x="40" y="954" width="840" height="92" class="layer" fill="#5a3a1a" stroke="#f2c98a" stroke-opacity="0.5"/>
+  <text x="60" y="984" class="title white">CUDA + CUDA-X: the moat</text>
+  <text x="60" y="1006" class="sub" fill="#ffe6c2">Programming model · cuDNN · cuBLAS · NCCL (collectives)</text>
+  <text x="60" y="1024" class="sub" fill="#ffe6c2">15+ years of libraries every framework compiles down to</text>
+
+  <!-- GPU silicon -->
+  <rect x="40" y="1058" width="840" height="82" class="layer" fill="#1a1a1a" stroke="#76b76a" stroke-opacity="0.6"/>
+  <text x="60" y="1090" class="title white">GPU silicon</text>
+  <text x="60" y="1112" class="sub" fill="#cccccc">Streaming multiprocessors · warps of 32 threads · warp schedulers</text>
+  <text x="60" y="1130" class="sub" fill="#cccccc">Shared via time-slicing · MPS · MIG, scheduled by KAI (Run:ai)</text>
+
+  <!-- acquisition tags -->
+  <g>
+    <rect x="676" y="752" width="184" height="24" rx="12" fill="#aaccf2"/>
+    <text x="768" y="769" class="tag" text-anchor="middle">acquired: Mellanox 2019</text>
+  </g>
+  <g>
+    <rect x="664" y="1062" width="196" height="24" rx="12" fill="#f2c98a"/>
+    <text x="762" y="1079" class="tag" text-anchor="middle">KAI scheduler: Run:ai 2024</text>
+  </g>
+</svg>
